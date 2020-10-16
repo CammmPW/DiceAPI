@@ -35,22 +35,22 @@ public class SingleItemSerialization {
             Material mat = items.getType();
             JSONObject bookMeta = null, armorMeta = null, skullMeta = null, fwMeta = null;
             if (mat == Material.WRITABLE_BOOK || mat == Material.WRITTEN_BOOK) {
-                bookMeta = BookSerialization.serializeBookMeta((BookMeta)items.getItemMeta());
+                bookMeta = BookSerialization.serializeBookMeta((BookMeta) items.getItemMeta());
             } else if (mat == Material.ENCHANTED_BOOK) {
-                bookMeta = BookSerialization.serializeEnchantedBookMeta((EnchantmentStorageMeta)items.getItemMeta());
+                bookMeta = BookSerialization.serializeEnchantedBookMeta((EnchantmentStorageMeta) items.getItemMeta());
             } else if (Util.isLeatherArmor(mat)) {
-                armorMeta = LeatherArmorSerialization.serializeArmor((LeatherArmorMeta)items.getItemMeta());
+                armorMeta = LeatherArmorSerialization.serializeArmor((LeatherArmorMeta) items.getItemMeta());
             } else if (mat == Material.SKELETON_SKULL) {
-                skullMeta = SkullSerialization.serializeSkull((SkullMeta)items.getItemMeta());
+                skullMeta = SkullSerialization.serializeSkull((SkullMeta) items.getItemMeta());
             } else if (mat == Material.FIREWORK_ROCKET) {
-                fwMeta = FireworkSerialization.serializeFireworkMeta((FireworkMeta)items.getItemMeta());
+                fwMeta = FireworkSerialization.serializeFireworkMeta((FireworkMeta) items.getItemMeta());
             }
             if (hasMeta) {
                 ItemMeta meta = items.getItemMeta();
                 if (meta.hasDisplayName())
                     name = meta.getDisplayName();
                 if (meta.hasLore())
-                    lore = (String[])meta.getLore().toArray((Object[])new String[0]);
+                    lore = meta.getLore().toArray(new String[0]);
                 if (meta.hasEnchants())
                     enchants = EnchantmentSerialization.serializeEnchantments(meta.getEnchants());
             }
@@ -118,22 +118,22 @@ public class SingleItemSerialization {
             if (Material.getMaterial(String.valueOf(id)) == null)
                 throw new IllegalArgumentException("Item " + index + " - No Material found with id of " + id);
             Material mat = Material.getMaterial(String.valueOf(id));
-            ItemStack stuff = new ItemStack(mat, amount, (short)data);
+            ItemStack stuff = new ItemStack(mat, amount, (short) data);
             if ((mat == Material.WRITABLE_BOOK || mat == Material.WRITTEN_BOOK) && item.has("book-meta")) {
                 BookMeta bookMeta = BookSerialization.getBookMeta(item.getJSONObject("book-meta"));
-                stuff.setItemMeta((ItemMeta)bookMeta);
+                stuff.setItemMeta(bookMeta);
             } else if (mat == Material.ENCHANTED_BOOK && item.has("book-meta")) {
                 EnchantmentStorageMeta enchantmentStorageMeta = BookSerialization.getEnchantedBookMeta(item.getJSONObject("book-meta"));
-                stuff.setItemMeta((ItemMeta)enchantmentStorageMeta);
+                stuff.setItemMeta(enchantmentStorageMeta);
             } else if (Util.isLeatherArmor(mat) && item.has("armor-meta")) {
                 LeatherArmorMeta leatherArmorMeta = LeatherArmorSerialization.getLeatherArmorMeta(item.getJSONObject("armor-meta"));
-                stuff.setItemMeta((ItemMeta)leatherArmorMeta);
+                stuff.setItemMeta(leatherArmorMeta);
             } else if (mat == Material.SKELETON_SKULL && item.has("skull-meta")) {
                 SkullMeta skullMeta = SkullSerialization.getSkullMeta(item.getJSONObject("skull-meta"));
-                stuff.setItemMeta((ItemMeta)skullMeta);
-            } else if (mat == Material. FIREWORK_ROCKET && item.has("firework-meta")) {
+                stuff.setItemMeta(skullMeta);
+            } else if (mat == Material.FIREWORK_ROCKET && item.has("firework-meta")) {
                 FireworkMeta fireworkMeta = FireworkSerialization.getFireworkMeta(item.getJSONObject("firework-meta"));
-                stuff.setItemMeta((ItemMeta)fireworkMeta);
+                stuff.setItemMeta(fireworkMeta);
             }
             ItemMeta meta = stuff.getItemMeta();
             if (name != null)

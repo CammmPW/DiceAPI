@@ -45,7 +45,7 @@ public class Serializer {
         Scanner x = new Scanner(stream);
         String str = "";
         while (x.hasNextLine())
-            str = String.valueOf(str) + x.nextLine() + "\n";
+            str = str + x.nextLine() + "\n";
         x.close();
         return str.trim();
     }

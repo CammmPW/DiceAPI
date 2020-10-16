@@ -109,18 +109,18 @@ public class TimeUtils {
         calendar.setTimeInMillis(time);
         int style = shortDisplay ? 1 : 2;
         Locale locale = Locale.getDefault();
-        String month = calendar.getDisplayName(2, style, locale);
-        int day = calendar.get(5);
-        String weekday = calendar.getDisplayName(7, style, locale);
-        int year = calendar.get(1);
-        int hour = calendar.get(11);
+        String month = calendar.getDisplayName(Calendar.MONTH, style, locale);
+        int day = calendar.get(Calendar.DATE);
+        String weekday = calendar.getDisplayName(Calendar.DAY_OF_WEEK, style, locale);
+        int year = calendar.get(Calendar.YEAR);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
         if (hour12 && hour > 12) {
             hour -= 12;
         } else if (hour12 && hour == 0) {
             hour = 12;
         }
-        int min = calendar.get(12);
-        String ap = hour12 ? calendar.getDisplayName(9, style, locale) : "";
+        int min = calendar.get(Calendar.MINUTE);
+        String ap = hour12 ? calendar.getDisplayName(Calendar.AM_PM, style, locale) : "";
         return weekday + ", " + month + " " + day + ", " + year + " - " + hour + ":" + min + ap;
     }
 }

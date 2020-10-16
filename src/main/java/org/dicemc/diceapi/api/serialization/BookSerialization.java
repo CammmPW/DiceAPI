@@ -42,7 +42,7 @@ public class BookSerialization {
                 String[] allPages = new String[pages.length()];
                 for (int i = 0; i < pages.length(); i++) {
                     String page = pages.getString(i);
-                    if (page.isEmpty() || page == null)
+                    if (page.isEmpty())
                         page = "";
                     allPages[i] = page;
                 }
@@ -63,7 +63,7 @@ public class BookSerialization {
             if (meta.hasAuthor())
                 root.put("author", meta.getAuthor());
             if (meta.hasPages()) {
-                String[] pages = (String[])meta.getPages().toArray((Object[])new String[0]);
+                String[] pages = meta.getPages().toArray(new String[0]);
                 root.put("pages", pages);
             }
             return root;
@@ -108,7 +108,7 @@ public class BookSerialization {
             if (json.has("enchantments")) {
                 Map<Enchantment, Integer> enchants = EnchantmentSerialization.getEnchantments(json.getString("enchantments"));
                 for (Enchantment e : enchants.keySet())
-                    meta.addStoredEnchant(e, ((Integer)enchants.get(e)).intValue(), true);
+                    meta.addStoredEnchant(e, enchants.get(e), true);
             }
             return meta;
         } catch (JSONException | IOException e) {

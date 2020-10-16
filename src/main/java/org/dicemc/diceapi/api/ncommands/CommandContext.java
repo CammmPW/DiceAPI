@@ -10,11 +10,11 @@ import org.dicemc.diceapi.util.ChatUtils;
 import java.util.HashMap;
 
 public class CommandContext {
-    protected CommandSender _sender;
+    protected final CommandSender _sender;
 
-    protected String[] _args;
+    protected final String[] _args;
 
-    protected String _sub;
+    protected final String _sub;
 
     protected static HashMap<String, String> _customMessages;
 
@@ -124,7 +124,7 @@ public class CommandContext {
     public String getJoinedArgs(int initialIndex, String delimiter) {
         String result = "";
         for (int i = initialIndex; i < this._args.length; i++)
-            result = String.valueOf(result) + this._args[i] + delimiter;
+            result = result + this._args[i] + delimiter;
         return result.trim();
     }
 

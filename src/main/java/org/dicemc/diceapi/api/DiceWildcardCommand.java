@@ -10,13 +10,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 
 public abstract class DiceWildcardCommand implements CommandExecutor {
-    public String cmdName;
+    public final String cmdName;
 
-    public String arguments;
+    public final String arguments;
 
-    public String description;
+    public final String description;
 
-    public String permission;
+    public final String permission;
 
     public DiceWildcardCommand(String commandName, String arguments, String description, String permission) {
         this.cmdName = commandName;

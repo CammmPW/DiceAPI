@@ -140,7 +140,7 @@ public class InventorySerialization {
         try {
             Scanner x = new Scanner(jsonFile);
             while (x.hasNextLine())
-                source = String.valueOf(source) + x.nextLine() + "\n";
+                source = source + x.nextLine() + "\n";
             x.close();
             return getInventory(source, size);
         } catch (FileNotFoundException e) {

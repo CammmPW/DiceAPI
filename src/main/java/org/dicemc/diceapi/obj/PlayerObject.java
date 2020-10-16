@@ -77,7 +77,7 @@ public class PlayerObject {
         double x = config.getDouble("last-location.x");
         double y = config.getDouble("last-location.y");
         double z = config.getDouble("last-location.z");
-        DiceAPI.instance.chat.out(String.valueOf(world) + " " + x + " " + y + " " + z);
+        DiceAPI.instance.chat.out(world + " " + x + " " + y + " " + z);
         return new Location(w, x, y, z);
     }
 

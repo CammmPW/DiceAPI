@@ -2,7 +2,6 @@ package org.dicemc.diceapi.api.serialization;
 
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Wolf;
 import org.dicemc.diceapi.json.JSONException;
 import org.dicemc.diceapi.json.JSONObject;
@@ -12,7 +11,7 @@ import java.io.IOException;
 public class WolfSerialization {
     public static JSONObject serializeWolf(Wolf wolf) {
         try {
-            JSONObject root = LivingEntitySerialization.serializeEntity((LivingEntity)wolf);
+            JSONObject root = LivingEntitySerialization.serializeEntity(wolf);
             if (shouldSerialize("collar-color"))
                 root.put("collar-color", ColorSerialization.serializeColor(wolf.getCollarColor().getColor()));
             return root;

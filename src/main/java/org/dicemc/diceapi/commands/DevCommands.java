@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class DevCommands {
     @ParentCommand("dev")
-    @Command(name = "item-as-string", args = "[printToConsole]", aliases = {"ias"}, desc = "Convert your held item to a TacoSerialization string", onlyPlayer = true)
+    @Command(name = "item-as-string", args = "[printToConsole]", aliases = {"ias"}, desc = "Convert your held item to a TacoSerialization string")
     @CommandPermission("TacoAPI.dev.itemAsString")
     public static void itemAsString(CommandContext context) {
         ItemStack hand = context.getPlayer().getInventory().getItemInMainHand();
@@ -29,7 +29,7 @@ public class DevCommands {
     }
 
     @ParentCommand("dev")
-    @Command(name = "gpy", desc = "Get your pitch/yaw angles", onlyPlayer = true)
+    @Command(name = "gpy", desc = "Get your pitch/yaw angles")
     @CommandPermission("TacoAPI.dev.getPitchYaw")
     public static void getPitchYaw(CommandContext context) {
         Player p = context.getPlayer();

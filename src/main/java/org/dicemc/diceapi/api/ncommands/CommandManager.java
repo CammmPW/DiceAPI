@@ -299,7 +299,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         this._tcHooks.add(new TabCompleteHook(parent, sub, index, list));
     }
 
-    class TabCompleteHook {
+    static class TabCompleteHook {
         private final String _parent;
 
         private final String _sub;

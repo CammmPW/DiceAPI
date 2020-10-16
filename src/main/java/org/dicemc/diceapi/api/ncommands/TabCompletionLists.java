@@ -6,15 +6,14 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class TabCompletionLists {
-    private static ArrayList<String> _entityNames = new ArrayList<>();
+    private static final ArrayList<String> _entityNames = new ArrayList<>();
 
-    private static ArrayList<String> _mobNames = new ArrayList<>();
+    private static final ArrayList<String> _mobNames = new ArrayList<>();
 
-    private static ArrayList<String> _materialNames = new ArrayList<>();
+    private static final ArrayList<String> _materialNames = new ArrayList<>();
 
     private static ArrayList<String> _playerNames;
 
@@ -66,7 +65,7 @@ public class TabCompletionLists {
         int i;
         Object[] arrayOfObject;
         for (i = (arrayOfObject = array).length, b = 0; b < i; ) {
-            E e = (E)arrayOfObject[b];
+            E e = (E) arrayOfObject[b];
             list.add(e.toString());
             sort(list);
             b++;
@@ -74,10 +73,6 @@ public class TabCompletionLists {
     }
 
     public static void sort(ArrayList<String> list) {
-        Collections.sort(list, new Comparator<String>() {
-            public int compare(String s, String str) {
-                return s.compareTo(str);
-            }
-        });
+        list.sort(Comparator.naturalOrder());
     }
 }

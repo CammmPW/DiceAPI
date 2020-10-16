@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public abstract class DiceCommandHandler implements CommandExecutor {
-    private String cmdName;
+    private final String cmdName;
 
-    private String description;
+    private final String description;
 
-    private String permission;
+    private final String permission;
 
-    private ArrayList<DiceCommand> commands;
+    private final ArrayList<DiceCommand> commands;
 
     public DiceCommandHandler(String cmdName, String description, String permission) {
         this.commands = new ArrayList<>();

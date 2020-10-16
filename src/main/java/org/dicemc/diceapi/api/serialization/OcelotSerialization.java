@@ -1,7 +1,6 @@
 package org.dicemc.diceapi.api.serialization;
 
 import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Ocelot;
 import org.dicemc.diceapi.json.JSONException;
 import org.dicemc.diceapi.json.JSONObject;
@@ -11,7 +10,7 @@ import java.io.IOException;
 public class OcelotSerialization {
     public static JSONObject serializeOcelot(Ocelot ocelot) {
         try {
-            JSONObject root = LivingEntitySerialization.serializeEntity((LivingEntity)ocelot);
+            JSONObject root = LivingEntitySerialization.serializeEntity(ocelot);
             if (shouldSerialize("type"))
                 root.put("type", ocelot.getCatType().name());
             return root;

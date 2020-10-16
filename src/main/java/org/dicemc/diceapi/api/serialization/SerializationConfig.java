@@ -36,30 +36,30 @@ public class SerializationConfig {
     }
 
     private static void setDefaults() {
-        addDefault("horse.color", Boolean.valueOf(true));
-        addDefault("horse.inventory", Boolean.valueOf(true));
-        addDefault("horse.jump-stength", Boolean.valueOf(true));
-        addDefault("horse.style", Boolean.valueOf(true));
-        addDefault("horse.variant", Boolean.valueOf(true));
-        addDefault("living-entity.age", Boolean.valueOf(true));
-        addDefault("living-entity.health", Boolean.valueOf(true));
-        addDefault("living-entity.name", Boolean.valueOf(true));
-        addDefault("living-entity.potion-effects", Boolean.valueOf(true));
-        addDefault("ocelot.type", Boolean.valueOf(true));
-        addDefault("player.ender-chest", Boolean.valueOf(true));
-        addDefault("player.inventory", Boolean.valueOf(true));
-        addDefault("player.stats", Boolean.valueOf(true));
-        addDefault("player-stats.can-fly", Boolean.valueOf(true));
-        addDefault("player-stats.display-name", Boolean.valueOf(true));
-        addDefault("player-stats.exhaustion", Boolean.valueOf(true));
-        addDefault("player-stats.exp", Boolean.valueOf(true));
-        addDefault("player-stats.food", Boolean.valueOf(true));
-        addDefault("player-stats.flying", Boolean.valueOf(true));
-        addDefault("player-stats.health", Boolean.valueOf(true));
-        addDefault("player-stats.level", Boolean.valueOf(true));
-        addDefault("player-stats.potion-effects", Boolean.valueOf(true));
-        addDefault("player-stats.saturation", Boolean.valueOf(true));
-        addDefault("wolf.collar-color", Boolean.valueOf(true));
+        addDefault("horse.color", true);
+        addDefault("horse.inventory", true);
+        addDefault("horse.jump-stength", true);
+        addDefault("horse.style", true);
+        addDefault("horse.variant", true);
+        addDefault("living-entity.age", true);
+        addDefault("living-entity.health", true);
+        addDefault("living-entity.name", true);
+        addDefault("living-entity.potion-effects", true);
+        addDefault("ocelot.type", true);
+        addDefault("player.ender-chest", true);
+        addDefault("player.inventory", true);
+        addDefault("player.stats", true);
+        addDefault("player-stats.can-fly", true);
+        addDefault("player-stats.display-name", true);
+        addDefault("player-stats.exhaustion", true);
+        addDefault("player-stats.exp", true);
+        addDefault("player-stats.food", true);
+        addDefault("player-stats.flying", true);
+        addDefault("player-stats.health", true);
+        addDefault("player-stats.level", true);
+        addDefault("player-stats.potion-effects", true);
+        addDefault("player-stats.saturation", true);
+        addDefault("wolf.collar-color", true);
     }
 
     public static void addDefault(String path, Object value) {

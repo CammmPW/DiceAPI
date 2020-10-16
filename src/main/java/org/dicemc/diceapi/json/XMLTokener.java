@@ -72,7 +72,7 @@ public class XMLTokener extends JSONTokener {
         if (c == ';') {
             String string = sb.toString();
             Object object = entity.get(string);
-            return (object != null) ? object : (String.valueOf(ampersand) + string + ";");
+            return (object != null) ? object : (ampersand + string + ";");
         }
         throw syntaxError("Missing ';' in XML entity: &" + sb);
     }

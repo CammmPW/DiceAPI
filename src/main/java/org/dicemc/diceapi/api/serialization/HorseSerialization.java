@@ -2,8 +2,6 @@ package org.dicemc.diceapi.api.serialization;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Horse;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.inventory.Inventory;
 import org.dicemc.diceapi.json.JSONException;
 import org.dicemc.diceapi.json.JSONObject;
 
@@ -12,11 +10,11 @@ import java.io.IOException;
 public class HorseSerialization {
     public static JSONObject serializeHorse(Horse horse) {
         try {
-            JSONObject root = LivingEntitySerialization.serializeEntity((LivingEntity)horse);
+            JSONObject root = LivingEntitySerialization.serializeEntity(horse);
             if (shouldSerialize("color"))
                 root.put("color", horse.getColor().name());
             if (shouldSerialize("inventory"))
-                root.put("inventory", InventorySerialization.serializeInventory((Inventory)horse.getInventory()));
+                root.put("inventory", InventorySerialization.serializeInventory(horse.getInventory()));
             if (shouldSerialize("jump-strength"))
                 root.put("jump-strength", horse.getJumpStrength());
             if (shouldSerialize("style"))

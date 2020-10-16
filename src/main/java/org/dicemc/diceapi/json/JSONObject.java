@@ -94,9 +94,7 @@ public class JSONObject {
     public JSONObject(Map map) {
         this.map = new HashMap<>();
         if (map != null) {
-            Iterator<Map.Entry> i = map.entrySet().iterator();
-            while (i.hasNext()) {
-                Map.Entry e = i.next();
+            for (Map.Entry e : (Iterable<Map.Entry>) map.entrySet()) {
                 Object value = e.getValue();
                 if (value != null)
                     this.map.put(e.getKey(), wrap(value));
@@ -112,11 +110,11 @@ public class JSONObject {
     public JSONObject(Object object, String[] names) {
         this();
         Class<?> c = object.getClass();
-        for (int i = 0; i < names.length; i++) {
-            String name = names[i];
+        for (String name : names) {
             try {
                 putOpt(name, c.getField(name).get(object));
-            } catch (Exception exception) {}
+            } catch (Exception exception) {
+            }
         }
     }
 
@@ -313,13 +311,13 @@ public class JSONObject {
         if (value == null) {
             put(key, 1);
         } else if (value instanceof Integer) {
-            put(key, ((Integer)value).intValue() + 1);
+            put(key, (Integer) value + 1);
         } else if (value instanceof Long) {
-            put(key, ((Long)value).longValue() + 1L);
+            put(key, (Long) value + 1L);
         } else if (value instanceof Double) {
-            put(key, ((Double)value).doubleValue() + 1.0D);
+            put(key, (Double) value + 1.0D);
         } else if (value instanceof Float) {
-            put(key, (((Float)value).floatValue() + 1.0F));
+            put(key, ((Float) value + 1.0F));
         } else {
             throw new JSONException("Unable to increment [" + quote(key) + "].");
         }
@@ -442,9 +440,9 @@ public class JSONObject {
         Method[] methods = includeSuperClass ?
                 klass.getMethods() :
                 klass.getDeclaredMethods();
-        for (int i = 0; i < methods.length; i++) {
+        for (Method value : methods) {
             try {
-                Method method = methods[i];
+                Method method = value;
                 if (Modifier.isPublic(method.getModifiers())) {
                     String name = method.getName();
                     String key = "";
@@ -464,15 +462,16 @@ public class JSONObject {
                         if (key.length() == 1) {
                             key = key.toLowerCase();
                         } else if (!Character.isUpperCase(key.charAt(1))) {
-                            key = String.valueOf(key.substring(0, 1).toLowerCase()) +
+                            key = key.substring(0, 1).toLowerCase() +
                                     key.substring(1);
                         }
-                        Object result = method.invoke(bean, null);
+                        Object result = method.invoke(bean, (Object) null);
                         if (result != null)
                             this.map.put(key, wrap(result));
                     }
                 }
-            } catch (Exception exception) {}
+            } catch (Exception exception) {
+            }
         }
     }
 
@@ -624,8 +623,8 @@ public class JSONObject {
                         return d;
                 } else {
                     Long myLong = new Long(string);
-                    if (myLong.longValue() == myLong.intValue())
-                        return new Integer(myLong.intValue());
+                    if (myLong == myLong.intValue())
+                        return myLong.intValue();
                     return myLong;
                 }
             } catch (Exception exception) {}
@@ -733,7 +732,7 @@ public class JSONObject {
         return write(writer, 0, 0);
     }
 
-    static final Writer writeValue(Writer writer, Object value, int indentFactor, int indent) throws JSONException, IOException {
+    static Writer writeValue(Writer writer, Object value, int indentFactor, int indent) throws JSONException, IOException {
         if (value == null || value.equals(null)) {
             writer.write("null");
         } else if (value instanceof JSONObject) {
@@ -765,7 +764,7 @@ public class JSONObject {
         return writer;
     }
 
-    static final void indent(Writer writer, int indent) throws IOException {
+    static void indent(Writer writer, int indent) throws IOException {
         for (int i = 0; i < indent; i++)
             writer.write(32);
     }

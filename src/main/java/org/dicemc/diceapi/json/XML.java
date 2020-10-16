@@ -61,7 +61,7 @@ public class XML {
     }
 
     private static boolean parse(XMLTokener x, JSONObject context, String name) throws JSONException {
-        JSONObject jsonobject = null;
+        JSONObject jsonobject;
         Object token = x.nextToken();
         if (token == BANG) {
             char c = x.next();

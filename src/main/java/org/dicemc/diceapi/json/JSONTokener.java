@@ -34,7 +34,7 @@ public class JSONTokener {
         this.line = 1L;
     }
 
-    public JSONTokener(InputStream inputStream) throws JSONException {
+    public JSONTokener(InputStream inputStream) {
         this(new InputStreamReader(inputStream));
     }
 
@@ -255,7 +255,7 @@ public class JSONTokener {
     }
 
     public JSONException syntaxError(String message) {
-        return new JSONException(String.valueOf(message) + toString());
+        return new JSONException(message + toString());
     }
 
     public String toString() {

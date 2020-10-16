@@ -9,10 +9,10 @@ import java.util.Collection;
 
 public class PotionEffectSerialization {
     public static String serializeEffects(Collection<PotionEffect> effects) {
-        String serialized = "";
+        StringBuilder serialized = new StringBuilder();
         for (PotionEffect e : effects)
-            serialized = String.valueOf(serialized) + e.getType().getId() + ":" + e.getDuration() + ":" + e.getAmplifier() + ";";
-        return serialized;
+            serialized.append(e.getType().getId()).append(":").append(e.getDuration()).append(":").append(e.getAmplifier()).append(";");
+        return serialized.toString();
     }
 
     public static Collection<PotionEffect> getPotionEffects(String serializedEffects) {
@@ -23,19 +23,19 @@ public class PotionEffectSerialization {
         for (int i = 0; i < effs.length; i++) {
             String[] effect = effs[i].split(":");
             if (effect.length < 3)
-                throw new IllegalArgumentException(String.valueOf(serializedEffects) + " - PotionEffect " + i + " (" + effs[i] + "): split must at least have a length of 3");
+                throw new IllegalArgumentException(serializedEffects + " - PotionEffect " + i + " (" + effs[i] + "): split must at least have a length of 3");
             if (!Util.isNum(effect[0]))
-                throw new IllegalArgumentException(String.valueOf(serializedEffects) + " - PotionEffect " + i + " (" + effs[i] + "): id is not an integer");
+                throw new IllegalArgumentException(serializedEffects + " - PotionEffect " + i + " (" + effs[i] + "): id is not an integer");
             if (!Util.isNum(effect[1]))
-                throw new IllegalArgumentException(String.valueOf(serializedEffects) + " - PotionEffect " + i + " (" + effs[i] + "): duration is not an integer");
+                throw new IllegalArgumentException(serializedEffects + " - PotionEffect " + i + " (" + effs[i] + "): duration is not an integer");
             if (!Util.isNum(effect[2]))
-                throw new IllegalArgumentException(String.valueOf(serializedEffects) + " - PotionEffect " + i + " (" + effs[i] + "): amplifier is not an integer");
+                throw new IllegalArgumentException(serializedEffects + " - PotionEffect " + i + " (" + effs[i] + "): amplifier is not an integer");
             int id = Integer.parseInt(effect[0]);
             int duration = Integer.parseInt(effect[1]);
             int amplifier = Integer.parseInt(effect[2]);
             PotionEffectType effectType = PotionEffectType.getById(id);
             if (effectType == null)
-                throw new IllegalArgumentException(String.valueOf(serializedEffects) + " - PotionEffect " + i + " (" + effs[i] + "): no PotionEffectType with id of " + id);
+                throw new IllegalArgumentException(serializedEffects + " - PotionEffect " + i + " (" + effs[i] + "): no PotionEffectType with id of " + id);
             PotionEffect e = new PotionEffect(effectType, duration, amplifier);
             effects.add(e);
         }

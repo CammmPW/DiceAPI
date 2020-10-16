@@ -14,7 +14,7 @@ public class JSONWriter {
 
     private int top;
 
-    protected Writer writer;
+    protected final Writer writer;
 
     public JSONWriter(Writer w) {
         this.comma = false;

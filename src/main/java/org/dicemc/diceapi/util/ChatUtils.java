@@ -57,13 +57,13 @@ public class ChatUtils {
     }
 
     public String join(String[] array, String delimiter) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < array.length; i++) {
-            result = result + array[i];
+            result.append(array[i]);
             if (i < array.length - 1)
-                result = result + delimiter;
+                result.append(delimiter);
         }
-        return result;
+        return result.toString();
     }
 
     public String join(ArrayList<String> list) {
@@ -118,9 +118,9 @@ public class ChatUtils {
                 b++;
             }
             if (capitalize) {
-                result = String.valueOf(result) + capitalize(word) + " ";
+                result = result + capitalize(word) + " ";
             } else {
-                result = String.valueOf(result) + word.toLowerCase() + " ";
+                result = result + word.toLowerCase() + " ";
             }
         }
         return result.trim();
@@ -149,12 +149,12 @@ public class ChatUtils {
     public String getFriendlyTimestamp(Timestamp time) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time.getTime());
-        String weekday = calendar.getDisplayName(7, 1, Locale.ENGLISH);
-        String month = calendar.getDisplayName(2, 2, Locale.ENGLISH);
-        int day = calendar.get(5);
-        int hour = calendar.get(11);
-        int min = calendar.get(12);
-        String ampm = (calendar.get(9) == 0) ? "a" : "p";
+        String weekday = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH);
+        String month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
+        int day = calendar.get(Calendar.DATE);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int min = calendar.get(Calendar.MINUTE);
+        String ampm = (calendar.get(Calendar.AM_PM) == Calendar.AM) ? "a" : "p";
         return weekday + ", " + month + " " + day + ", " + ((hour > 12) ? (hour - 12) : hour) + ":" + ((min < 10) ? ("0" + min) : Integer.valueOf(min)) + ampm;
     }
 

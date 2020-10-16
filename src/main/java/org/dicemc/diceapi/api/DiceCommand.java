@@ -3,15 +3,15 @@ package org.dicemc.diceapi.api;
 import org.bukkit.entity.Player;
 
 public abstract class DiceCommand implements Comparable<DiceCommand> {
-    private String[] aliases;
+    private final String[] aliases;
 
-    private String name;
+    private final String name;
 
-    private String args;
+    private final String args;
 
-    private String description;
+    private final String description;
 
-    private String permission;
+    private final String permission;
 
     public DiceCommand(String name, String[] aliases, String args, String description, String permission) {
         this.name = name;
