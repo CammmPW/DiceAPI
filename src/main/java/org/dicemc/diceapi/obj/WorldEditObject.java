@@ -1,10 +1,12 @@
 package org.dicemc.diceapi.obj;
 
-import com.sk89q.worldedit.EmptyClipboardException;
-import com.sk89q.worldedit.LocalConfiguration;
-import com.sk89q.worldedit.LocalSession;
+import com.boydti.fawe.util.EditSessionBuilder;
+import com.sk89q.worldedit.*;
+import com.sk89q.worldedit.bukkit.BukkitCommandSender;
+import com.sk89q.worldedit.bukkit.BukkitPlayer;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldedit.extension.input.ParserContext;
 import com.sk89q.worldedit.extension.platform.Actor;
 import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
@@ -12,10 +14,15 @@ import com.sk89q.worldedit.extent.clipboard.io.BuiltInClipboardFormat;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardWriter;
+import com.sk89q.worldedit.function.pattern.Pattern;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
+import com.sk89q.worldedit.regions.RegionSelector;
+import com.sk89q.worldedit.world.block.BaseBlock;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.dicemc.diceapi.DiceAPI;
 import javax.annotation.Nullable;
@@ -105,5 +112,22 @@ public class WorldEditObject {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public BaseBlock getBlock(String id) throws WorldEditException {
+        return we.getWorldEdit().getBlockFactory().parseFromInput(id, new ParserContext());
+    }
+
+    public int setAreaWithBlock(String world, Location minPoint, Location maxPoint, String blockId) {
+        LocalSession session = getLocalSession();
+        BukkitWorld bukkitWorld = getLocalWorld(world);
+        if (bukkitWorld == null) {
+            return 0;
+        }
+        RegionSelector selector = session.getRegionSelector(bukkitWorld);
+        selector.selectPrimary(toVector(minPoint), null);
+        selector.selectSecondary(toVector(maxPoint), null);
+        EditSession editSession = new EditSession(new EditSessionBuilder(bukkitWorld));
+        return editSession.setBlocks(selector.getRegion(), getBlock(blockId));
     }
 }
