@@ -56,7 +56,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             Method m = arrayOfMethod[b];
             if (Modifier.isStatic(m.getModifiers())) {
                 boolean parentPresent = m.isAnnotationPresent(ParentCommand.class);
-                boolean commandPresent = m.isAnnotationPresent((Class) Command.class);
+                boolean commandPresent = m.isAnnotationPresent(org.dicemc.diceapi.api.ncommands.Command.class);
                 boolean simplePresent = m.isAnnotationPresent(SimpleCommand.class);
                 if (simplePresent || (parentPresent && commandPresent)) {
                     String command = simplePresent ? m.getAnnotation(SimpleCommand.class).name() : m.getAnnotation(ParentCommand.class).value();
@@ -125,7 +125,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         return false;
     }
 
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         Player player = null;
         if (sender instanceof Player)
             player = (Player) sender;
