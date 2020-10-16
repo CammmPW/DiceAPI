@@ -8,6 +8,7 @@ import org.dicemc.diceapi.json.JSONArray;
 import org.dicemc.diceapi.json.JSONException;
 import org.dicemc.diceapi.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ public class SingleItemSerialization {
             JSONObject values = new JSONObject();
             if (items == null)
                 return null;
-            int id = items.getTypeId();
+            Material id = items.getType();
             int amount = items.getAmount();
             int data = items.getDurability();
             boolean hasMeta = items.hasItemMeta();
@@ -33,15 +34,15 @@ public class SingleItemSerialization {
             String[] lore = null;
             Material mat = items.getType();
             JSONObject bookMeta = null, armorMeta = null, skullMeta = null, fwMeta = null;
-            if (mat == Material.BOOK_AND_QUILL || mat == Material.WRITTEN_BOOK) {
+            if (mat == Material.WRITABLE_BOOK || mat == Material.WRITTEN_BOOK) {
                 bookMeta = BookSerialization.serializeBookMeta((BookMeta)items.getItemMeta());
             } else if (mat == Material.ENCHANTED_BOOK) {
                 bookMeta = BookSerialization.serializeEnchantedBookMeta((EnchantmentStorageMeta)items.getItemMeta());
             } else if (Util.isLeatherArmor(mat)) {
                 armorMeta = LeatherArmorSerialization.serializeArmor((LeatherArmorMeta)items.getItemMeta());
-            } else if (mat == Material.SKULL_ITEM) {
+            } else if (mat == Material.SKELETON_SKULL) {
                 skullMeta = SkullSerialization.serializeSkull((SkullMeta)items.getItemMeta());
-            } else if (mat == Material.FIREWORK) {
+            } else if (mat == Material.FIREWORK_ROCKET) {
                 fwMeta = FireworkSerialization.serializeFireworkMeta((FireworkMeta)items.getItemMeta());
             }
             if (hasMeta) {
@@ -114,11 +115,11 @@ public class SingleItemSerialization {
                 for (int j = 0; j < l.length(); j++)
                     lore.add(l.getString(j));
             }
-            if (Material.getMaterial(id) == null)
+            if (Material.getMaterial(String.valueOf(id)) == null)
                 throw new IllegalArgumentException("Item " + index + " - No Material found with id of " + id);
-            Material mat = Material.getMaterial(id);
+            Material mat = Material.getMaterial(String.valueOf(id));
             ItemStack stuff = new ItemStack(mat, amount, (short)data);
-            if ((mat == Material.BOOK_AND_QUILL || mat == Material.WRITTEN_BOOK) && item.has("book-meta")) {
+            if ((mat == Material.WRITABLE_BOOK || mat == Material.WRITTEN_BOOK) && item.has("book-meta")) {
                 BookMeta bookMeta = BookSerialization.getBookMeta(item.getJSONObject("book-meta"));
                 stuff.setItemMeta((ItemMeta)bookMeta);
             } else if (mat == Material.ENCHANTED_BOOK && item.has("book-meta")) {
@@ -127,10 +128,10 @@ public class SingleItemSerialization {
             } else if (Util.isLeatherArmor(mat) && item.has("armor-meta")) {
                 LeatherArmorMeta leatherArmorMeta = LeatherArmorSerialization.getLeatherArmorMeta(item.getJSONObject("armor-meta"));
                 stuff.setItemMeta((ItemMeta)leatherArmorMeta);
-            } else if (mat == Material.SKULL_ITEM && item.has("skull-meta")) {
+            } else if (mat == Material.SKELETON_SKULL && item.has("skull-meta")) {
                 SkullMeta skullMeta = SkullSerialization.getSkullMeta(item.getJSONObject("skull-meta"));
                 stuff.setItemMeta((ItemMeta)skullMeta);
-            } else if (mat == Material.FIREWORK && item.has("firework-meta")) {
+            } else if (mat == Material. FIREWORK_ROCKET && item.has("firework-meta")) {
                 FireworkMeta fireworkMeta = FireworkSerialization.getFireworkMeta(item.getJSONObject("firework-meta"));
                 stuff.setItemMeta((ItemMeta)fireworkMeta);
             }
@@ -143,7 +144,7 @@ public class SingleItemSerialization {
             if (enchants != null)
                 stuff.addUnsafeEnchantments(enchants);
             return stuff;
-        } catch (JSONException e) {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
             return null;
         }

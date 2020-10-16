@@ -18,7 +18,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class DiceAPI extends DicePlugin {
-    public static DiceAPI plugin;
+    public static DiceAPI instance;
 
     public static DiceAPIConfig config;
 
@@ -49,7 +49,7 @@ public class DiceAPI extends DicePlugin {
     private static CommandManager commands;
 
     public void onStart() {
-        plugin = this;
+        instance = this;
         config = new DiceAPIConfig(new File(getDataFolder() + "/config.yml"));
         playerData = new File(getDataFolder() + "/playerData");
         if (!playerData.exists())
@@ -85,7 +85,7 @@ public class DiceAPI extends DicePlugin {
         serverAPI = new ServerObject();
         this.chat.out("[Server] API Online");
         try {
-            WorldEditPlugin wePlugin = (WorldEditPlugin)plugin.getServer().getPluginManager().getPlugin("WorldEdit");
+            WorldEditPlugin wePlugin = (WorldEditPlugin)instance.getServer().getPluginManager().getPlugin("WorldEdit");
             if (wePlugin == null) {
                 this.chat.outWarn("[WorldEdit] API not loaded");
             } else {
@@ -97,7 +97,7 @@ public class DiceAPI extends DicePlugin {
         }
         SerializationConfig.reload();
         getServer().getPluginManager().registerEvents((Listener)new PlayerListener(), (Plugin)this);
-        commands = new CommandManager((JavaPlugin)plugin);
+        commands = new CommandManager((JavaPlugin)instance);
         commands.reg(DevCommands.class);
         startMetrics();
     }
@@ -151,7 +151,7 @@ public class DiceAPI extends DicePlugin {
     }
 
     public static boolean isItemMailInstalled() {
-        return (plugin.getServer().getPluginManager().getPlugin("ItemMail") != null);
+        return (instance.getServer().getPluginManager().getPlugin("ItemMail") != null);
     }
 
     public static boolean isEconAPIOnline() {
