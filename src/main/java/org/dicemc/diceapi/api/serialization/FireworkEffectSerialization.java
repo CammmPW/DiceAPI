@@ -6,6 +6,8 @@ import org.dicemc.diceapi.json.JSONArray;
 import org.dicemc.diceapi.json.JSONException;
 import org.dicemc.diceapi.json.JSONObject;
 
+import java.io.IOException;
+
 public class FireworkEffectSerialization {
     public static FireworkEffect getFireworkEffect(String json) {
         return getFireworkEffect(json);
@@ -26,9 +28,7 @@ public class FireworkEffectSerialization {
                 builder.withTrail();
             builder.with(FireworkEffect.Type.valueOf(json.getString("type")));
             return builder.build();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (IllegalArgumentException | IOException | JSONException e) {
             e.printStackTrace();
         }
         return null;

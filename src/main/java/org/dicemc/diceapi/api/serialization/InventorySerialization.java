@@ -11,6 +11,7 @@ import org.dicemc.diceapi.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class InventorySerialization {
@@ -128,7 +129,7 @@ public class InventorySerialization {
                 contents[index] = stuff;
             }
             return contents;
-        } catch (JSONException e) {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
             return null;
         }
@@ -188,8 +189,8 @@ public class InventorySerialization {
             ItemStack[] armor = getInventory(inv.getJSONArray("armor"), 4);
             inventory.clear();
             inventory.setArmorContents(armor);
-            setInventory((InventoryHolder)player, inv.getJSONArray("inventory"));
-        } catch (JSONException e) {
+            setInventory(player, inv.getJSONArray("inventory"));
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
     }

@@ -3,26 +3,26 @@ package org.dicemc.diceapi.json;
 import java.util.Iterator;
 
 public class XML {
-    public static final Character AMP = new Character('&');
+    public static final Character AMP = '&';
 
-    public static final Character APOS = new Character('\'');
+    public static final Character APOS = '\'';
 
-    public static final Character BANG = new Character('!');
+    public static final Character BANG = '!';
 
-    public static final Character EQ = new Character('=');
+    public static final Character EQ = '=';
 
-    public static final Character GT = new Character('>');
+    public static final Character GT = '>';
 
-    public static final Character LT = new Character('<');
+    public static final Character LT = '<';
 
-    public static final Character QUEST = new Character('?');
+    public static final Character QUEST = '?';
 
-    public static final Character QUOT = new Character('"');
+    public static final Character QUOT = '"';
 
-    public static final Character SLASH = new Character('/');
+    public static final Character SLASH = '/';
 
     public static String escape(String string) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0, length = string.length(); i < length; i++) {
             char c = string.charAt(i);
             switch (c) {
@@ -111,21 +111,21 @@ public class XML {
         }
         if (token instanceof Character)
             throw x.syntaxError("Misshaped tag");
-        String tagName = (String)token;
+        String tagName = (String) token;
         token = null;
         jsonobject = new JSONObject();
         while (true) {
             if (token == null)
                 token = x.nextToken();
             if (token instanceof String) {
-                String string = (String)token;
+                String string = (String) token;
                 token = x.nextToken();
                 if (token == EQ) {
                     token = x.nextToken();
                     if (!(token instanceof String))
                         throw x.syntaxError("Missing value");
                     jsonobject.accumulate(string,
-                            stringToValue((String)token));
+                            stringToValue((String) token));
                     token = null;
                     continue;
                 }
@@ -153,7 +153,7 @@ public class XML {
                     return false;
                 }
                 if (token instanceof String) {
-                    String string = (String)token;
+                    String string = (String) token;
                     if (string.length() > 0)
                         jsonobject.accumulate("content",
                                 stringToValue(string));
@@ -186,7 +186,7 @@ public class XML {
         if ("null".equalsIgnoreCase(string))
             return JSONObject.NULL;
         if ("0".equals(string))
-            return new Integer(0);
+            return 0;
         try {
             char initial = string.charAt(0);
             boolean negative = false;
@@ -201,12 +201,13 @@ public class XML {
                     return Double.valueOf(string);
                 if (string.indexOf('e') < 0 && string.indexOf('E') < 0) {
                     Long myLong = new Long(string);
-                    if (myLong.longValue() == myLong.intValue())
-                        return new Integer(myLong.intValue());
+                    if (myLong == myLong.intValue())
+                        return myLong.intValue();
                     return myLong;
                 }
             }
-        } catch (Exception exception) {}
+        } catch (Exception exception) {
+        }
         return string;
     }
 
@@ -223,28 +224,28 @@ public class XML {
     }
 
     public static String toString(Object object, String tagName) throws JSONException {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         if (object instanceof JSONObject) {
             if (tagName != null) {
                 sb.append('<');
                 sb.append(tagName);
                 sb.append('>');
             }
-            JSONObject jo = (JSONObject)object;
-            Iterator<E> keys = jo.keys();
+            JSONObject jo = (JSONObject) object;
+            Iterator keys = jo.keys();
             while (keys.hasNext()) {
                 String key = keys.next().toString();
                 Object value = jo.opt(key);
                 if (value == null)
                     value = "";
                 if (value instanceof String) {
-                    String str = (String)value;
+                    String str = (String) value;
                 } else {
                     String str = null;
                 }
                 if ("content".equals(key)) {
                     if (value instanceof JSONArray) {
-                        JSONArray ja = (JSONArray)value;
+                        JSONArray ja = (JSONArray) value;
                         int length = ja.length();
                         for (int i = 0; i < length; i++) {
                             if (i > 0)
@@ -257,7 +258,7 @@ public class XML {
                     continue;
                 }
                 if (value instanceof JSONArray) {
-                    JSONArray ja = (JSONArray)value;
+                    JSONArray ja = (JSONArray) value;
                     int length = ja.length();
                     for (int i = 0; i < length; i++) {
                         value = ja.get(i);
@@ -293,13 +294,13 @@ public class XML {
         if (object.getClass().isArray())
             object = new JSONArray(object);
         if (object instanceof JSONArray) {
-            JSONArray ja = (JSONArray)object;
+            JSONArray ja = (JSONArray) object;
             int length = ja.length();
             for (int i = 0; i < length; i++)
                 sb.append(toString(ja.opt(i), (tagName == null) ? "array" : tagName));
             return sb.toString();
         }
-        String string = (object == null) ? "null" : escape(object.toString());
+        String string = escape(object.toString());
         return (tagName == null) ? ("\"" + string + "\"") : (
                 (string.length() == 0) ? ("<" + tagName + "/>") : (
                         "<" + tagName + ">" + string + "</" + tagName + ">"));

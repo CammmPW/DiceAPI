@@ -10,10 +10,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class JSONArray {
-    private final ArrayList myArrayList;
+    private final ArrayList<Object> myArrayList;
 
     public JSONArray() {
-        this.myArrayList = new ArrayList();
+        this.myArrayList = new ArrayList<>();
     }
 
     public JSONArray(JSONTokener x) throws JSONException {
@@ -156,7 +156,7 @@ public class JSONArray {
 
     public String join(String separator) throws JSONException, IOException {
         int len = length();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < len; i++) {
             if (i > 0)
                 sb.append(separator);
@@ -255,7 +255,7 @@ public class JSONArray {
     }
 
     public JSONArray put(double value) throws JSONException {
-        Double d = new Double(value);
+        Double d = value;
         JSONObject.testValidity(d);
         put(d);
         return this;

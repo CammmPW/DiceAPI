@@ -18,7 +18,7 @@ public class JSONTokener {
 
     private char previous;
 
-    private Reader reader;
+    private final Reader reader;
 
     private boolean usePrevious;
 
@@ -134,7 +134,7 @@ public class JSONTokener {
     }
 
     public String nextString(char quote) throws JSONException {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         while (true) {
             char c = next();
             switch (c) {
@@ -179,7 +179,7 @@ public class JSONTokener {
     }
 
     public String nextTo(char delimiter) throws JSONException {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         while (true) {
             char c = next();
             if (c == delimiter || c == '\000' || c == '\n' || c == '\r') {
@@ -192,7 +192,7 @@ public class JSONTokener {
     }
 
     public String nextTo(String delimiters) throws JSONException {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         while (true) {
             char c = next();
             if (delimiters.indexOf(c) >= 0 || c == '\000' ||
@@ -218,7 +218,7 @@ public class JSONTokener {
                 back();
                 return new JSONArray(this);
         }
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         while (c >= ' ' && ",:]}/\\\"[{;=#".indexOf(c) < 0) {
             sb.append(c);
             c = next();

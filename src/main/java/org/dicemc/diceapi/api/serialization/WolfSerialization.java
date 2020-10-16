@@ -7,6 +7,8 @@ import org.bukkit.entity.Wolf;
 import org.dicemc.diceapi.json.JSONException;
 import org.dicemc.diceapi.json.JSONObject;
 
+import java.io.IOException;
+
 public class WolfSerialization {
     public static JSONObject serializeWolf(Wolf wolf) {
         try {
@@ -54,7 +56,7 @@ public class WolfSerialization {
             if (stats.has("collar-color"))
                 wolf.setCollarColor(DyeColor.getByColor(ColorSerialization.getColor(stats.getString("collar-color"))));
             return wolf;
-        } catch (JSONException e) {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
             return null;
         }

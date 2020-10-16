@@ -1,0 +1,9 @@
+name: DiceAPI
+author: Kuxum
+version: 1.0-SNAPSHOT
+api-version: 1.13
+main: org.dicemc.diceapi.DiceAPI
+depend: [FastAsyncWorldEdit, Vault]
+commands:
+  dev:
+    aliases: [developer, d, ta]

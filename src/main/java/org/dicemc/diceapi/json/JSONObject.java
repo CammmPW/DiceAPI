@@ -18,9 +18,9 @@ import java.util.Set;
 public class JSONObject {
     private static final int keyPoolSize = 100;
 
-    private static HashMap keyPool = new HashMap<>(100);
+    private static HashMap<String, Object> keyPool = new HashMap<>(100);
 
-    private final Map map;
+    private final Map<Object, Object> map;
 
     private static final class Null {
         private Null() {}
@@ -46,10 +46,11 @@ public class JSONObject {
 
     public JSONObject(JSONObject jo, String[] names) {
         this();
-        for (int i = 0; i < names.length; i++) {
+        for (String name : names) {
             try {
-                putOnce(names[i], jo.opt(names[i]));
-            } catch (Exception exception) {}
+                putOnce(name, jo.opt(name));
+            } catch (Exception exception) {
+            }
         }
     }
 
@@ -129,9 +130,9 @@ public class JSONObject {
                 Thread.currentThread().getContextClassLoader());
         Enumeration<String> keys = bundle.getKeys();
         while (keys.hasMoreElements()) {
-            Object key = keys.nextElement();
+            String key = keys.nextElement();
             if (key instanceof String) {
-                String[] path = ((String)key).split("\\.");
+                String[] path = key.split("\\.");
                 int last = path.length - 1;
                 JSONObject target = this;
                 for (int i = 0; i < last; i++) {
@@ -143,7 +144,7 @@ public class JSONObject {
                     }
                     target = nextTarget;
                 }
-                target.put(path[last], bundle.getString((String)key));
+                target.put(path[last], bundle.getString(key));
             }
         }
     }

@@ -7,6 +7,8 @@ import org.bukkit.inventory.Inventory;
 import org.dicemc.diceapi.json.JSONException;
 import org.dicemc.diceapi.json.JSONObject;
 
+import java.io.IOException;
+
 public class HorseSerialization {
     public static JSONObject serializeHorse(Horse horse) {
         try {
@@ -66,11 +68,11 @@ public class HorseSerialization {
             if (stats.has("style"))
                 horse.setStyle(Horse.Style.valueOf(stats.getString("style")));
             if (stats.has("inventory"))
-                PotionEffectSerialization.addPotionEffects(stats.getString("potion-effects"), (LivingEntity)horse);
+                PotionEffectSerialization.addPotionEffects(stats.getString("potion-effects"), horse);
             if (stats.has("variant"))
                 horse.setVariant(Horse.Variant.valueOf(stats.getString("variant")));
             return horse;
-        } catch (JSONException e) {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
             return null;
         }

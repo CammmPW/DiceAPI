@@ -99,7 +99,6 @@ public class DiceAPI extends DicePlugin {
         getServer().getPluginManager().registerEvents((Listener)new PlayerListener(), (Plugin)this);
         commands = new CommandManager((JavaPlugin)instance);
         commands.reg(DevCommands.class);
-        startMetrics();
     }
 
     public void onStop() {

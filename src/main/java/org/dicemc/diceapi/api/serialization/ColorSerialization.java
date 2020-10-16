@@ -4,6 +4,8 @@ import org.bukkit.Color;
 import org.dicemc.diceapi.json.JSONException;
 import org.dicemc.diceapi.json.JSONObject;
 
+import java.io.IOException;
+
 public class ColorSerialization {
     public static JSONObject serializeColor(Color color) {
         try {
@@ -37,7 +39,7 @@ public class ColorSerialization {
             if (color.has("blue"))
                 b = color.getInt("blue");
             return Color.fromRGB(r, g, b);
-        } catch (JSONException e) {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
             return null;
         }

@@ -6,6 +6,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.dicemc.diceapi.json.JSONException;
 import org.dicemc.diceapi.json.JSONObject;
 
+import java.io.IOException;
+
 public class SkullSerialization {
     public static JSONObject serializeSkull(SkullMeta meta) {
         try {
@@ -49,12 +51,12 @@ public class SkullSerialization {
 
     public static SkullMeta getSkullMeta(JSONObject meta) {
         try {
-            ItemStack dummyItems = new ItemStack(Material.SKULL_ITEM);
+            ItemStack dummyItems = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta dummyMeta = (SkullMeta)dummyItems.getItemMeta();
             if (meta.has("owner"))
                 dummyMeta.setOwner(meta.getString("owner"));
             return dummyMeta;
-        } catch (JSONException e) {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
             return null;
         }

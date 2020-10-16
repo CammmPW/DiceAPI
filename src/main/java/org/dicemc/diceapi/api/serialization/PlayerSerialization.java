@@ -4,6 +4,8 @@ import org.bukkit.entity.Player;
 import org.dicemc.diceapi.json.JSONException;
 import org.dicemc.diceapi.json.JSONObject;
 
+import java.io.IOException;
+
 public class PlayerSerialization {
     public static JSONObject serializePlayer(Player player) {
         try {
@@ -56,7 +58,7 @@ public class PlayerSerialization {
                 InventorySerialization.setPlayerInventory(player, meta.getJSONObject("inventory"));
             if (meta.has("stats"))
                 PlayerStatsSerialization.applyPlayerStats(player, meta.getJSONObject("stats"));
-        } catch (JSONException e) {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
     }

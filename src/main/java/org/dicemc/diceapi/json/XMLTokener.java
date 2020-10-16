@@ -3,7 +3,7 @@ package org.dicemc.diceapi.json;
 import java.util.HashMap;
 
 public class XMLTokener extends JSONTokener {
-    public static final HashMap entity = new HashMap<>(8);
+    public static final HashMap<String, Character> entity = new HashMap<>(8);
 
     static {
         entity.put("amp", XML.AMP);
@@ -18,7 +18,7 @@ public class XMLTokener extends JSONTokener {
     }
 
     public String nextCDATA() throws JSONException {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         while (true) {
             char c = next();
             if (end())
@@ -41,7 +41,7 @@ public class XMLTokener extends JSONTokener {
                     return null;
                 if (c == '<')
                     return XML.LT;
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 while (true) {
                     if (c == '<' || c == '\000') {
                         back();
@@ -60,7 +60,7 @@ public class XMLTokener extends JSONTokener {
 
     public Object nextEntity(char ampersand) throws JSONException {
         char c;
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         while (true) {
             c = next();
             if (Character.isLetterOrDigit(c) || c == '#') {
@@ -150,7 +150,7 @@ public class XMLTokener extends JSONTokener {
             case '"':
             case '\'':
                 q = c;
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 while (true) {
                     c = next();
                     if (c == '\000')
@@ -164,7 +164,7 @@ public class XMLTokener extends JSONTokener {
                     sb.append(c);
                 }
         }
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         while (true) {
             sb.append(c);
             c = next();
