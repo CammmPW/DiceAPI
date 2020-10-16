@@ -24,9 +24,7 @@ public class PlayerObject {
     }
 
     public ArrayList<Tameable> getPets(String playername) {
-        ArrayList<Tameable> pets = new ArrayList<>();
-        pets.addAll(getTamedWolves(playername));
-        return pets;
+        return new ArrayList<>(getTamedWolves(playername));
     }
 
     public ArrayList<Wolf> getTamedWolves(String playername) {
@@ -87,9 +85,9 @@ public class PlayerObject {
         File file = new File(DiceAPI.playerData + "/" + name + ".yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         config.set("last-location.world", location.getWorld().getName());
-        config.set("last-location.x", Double.valueOf(location.getX()));
-        config.set("last-location.y", Double.valueOf(location.getY()));
-        config.set("last-location.z", Double.valueOf(location.getZ()));
+        config.set("last-location.x", location.getX());
+        config.set("last-location.y", location.getY());
+        config.set("last-location.z", location.getZ());
         save(file, config);
     }
 
@@ -107,7 +105,7 @@ public class PlayerObject {
     public void saveGameMode(String name, GameMode gameMode) {
         File file = new File(DiceAPI.playerData + "/" + name + ".yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        config.set("last-gamemode", Integer.valueOf(gameMode.getValue()));
+        config.set("last-gamemode", gameMode.getValue());
         save(file, config);
     }
 

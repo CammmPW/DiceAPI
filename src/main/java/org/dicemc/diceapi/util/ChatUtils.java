@@ -19,7 +19,7 @@ public class ChatUtils {
     }
 
     public String createHeader(String title, String format) {
-        return formatMessage(format.replaceAll("%title", title));
+        return formatMessage(format.replace("%title", title));
     }
 
     public String formatMessage(String message) {
@@ -59,9 +59,9 @@ public class ChatUtils {
     public String join(String[] array, String delimiter) {
         String result = "";
         for (int i = 0; i < array.length; i++) {
-            result = String.valueOf(result) + array[i];
+            result = result + array[i];
             if (i < array.length - 1)
-                result = String.valueOf(result) + delimiter;
+                result = result + delimiter;
         }
         return result;
     }
@@ -71,13 +71,13 @@ public class ChatUtils {
     }
 
     public String join(ArrayList<String> list, String delimiter) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < list.size(); i++) {
-            result = String.valueOf(result) + (String)list.get(i);
+            result.append(list.get(i));
             if (i < list.size() - 1)
-                result = String.valueOf(result) + delimiter;
+                result.append(delimiter);
         }
-        return result;
+        return result.toString();
     }
 
     public String[] removeArgs(String[] array, int startIndex) {
@@ -132,12 +132,12 @@ public class ChatUtils {
         if (s.length() == 1)
             return s.toUpperCase();
         if (s.length() == 2) {
-            String first = (new StringBuilder(String.valueOf(s.charAt(0)))).toString().toUpperCase();
-            String sec = (new StringBuilder(String.valueOf(s.charAt(1)))).toString().toLowerCase();
-            return String.valueOf(first) + sec;
+            String first = String.valueOf(s.charAt(0)).toUpperCase();
+            String sec = String.valueOf(s.charAt(1)).toLowerCase();
+            return first + sec;
         }
         s = s.toUpperCase();
-        return String.valueOf(s.charAt(0)) + s.substring(1, s.length()).toLowerCase();
+        return s.charAt(0) + s.substring(1).toLowerCase();
     }
 
     public <E> E getRandomElement(ArrayList<E> list) {
@@ -155,14 +155,14 @@ public class ChatUtils {
         int hour = calendar.get(11);
         int min = calendar.get(12);
         String ampm = (calendar.get(9) == 0) ? "a" : "p";
-        return String.valueOf(weekday) + ", " + month + " " + day + ", " + ((hour > 12) ? (hour - 12) : hour) + ":" + ((min < 10) ? ("0" + min) : Integer.valueOf(min)) + ampm;
+        return weekday + ", " + month + " " + day + ", " + ((hour > 12) ? (hour - 12) : hour) + ":" + ((min < 10) ? ("0" + min) : Integer.valueOf(min)) + ampm;
     }
 
     public String maxLength(String str, int length) {
         if (str.length() < length)
             return str;
         if (length > 3)
-            return String.valueOf(str.substring(0, length - 3)) + "...";
+            return str.substring(0, length - 3) + "...";
         throw new IllegalArgumentException("Minimum length of 3 characters.");
     }
 }

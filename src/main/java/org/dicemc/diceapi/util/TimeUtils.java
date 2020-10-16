@@ -11,7 +11,7 @@ public class TimeUtils {
         DAY(HOUR.getSeconds() * 24),
         YEAR(DAY.getSeconds() * 365);
 
-        private int seconds;
+        private final int seconds;
 
         public static final long MINECRAFT_SECOND_TICKS = 20L;
 
@@ -92,15 +92,15 @@ public class TimeUtils {
         long seconds = time % year % day % hour % minute / second;
         String t = "";
         if (years > 0L)
-            t = String.valueOf(t) + years + "y ";
+            t = t + years + "y ";
         if (days > 0L)
-            t = String.valueOf(t) + days + "d ";
+            t = t + days + "d ";
         if (hours > 0L)
-            t = String.valueOf(t) + hours + "h ";
+            t = t + hours + "h ";
         if (minutes > 0L)
-            t = String.valueOf(t) + minutes + "m ";
+            t = t + minutes + "m ";
         if (seconds > 0L)
-            t = String.valueOf(t) + seconds + "s";
+            t = t + seconds + "s";
         return t.trim();
     }
 
@@ -121,6 +121,6 @@ public class TimeUtils {
         }
         int min = calendar.get(12);
         String ap = hour12 ? calendar.getDisplayName(9, style, locale) : "";
-        return String.valueOf(weekday) + ", " + month + " " + day + ", " + year + " - " + hour + ":" + min + ap;
+        return weekday + ", " + month + " " + day + ", " + year + " - " + hour + ":" + min + ap;
     }
 }

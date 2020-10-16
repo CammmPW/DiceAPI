@@ -1,19 +1,19 @@
 package org.dicemc.diceapi.util;
 
 public class Time {
-    private long _y;
+    private final long _y;
 
-    private long _d;
+    private final long _d;
 
-    private long _h;
+    private final long _h;
 
-    private long _m;
+    private final long _m;
 
-    private long _s;
+    private final long _s;
 
-    private long _ms;
+    private final long _ms;
 
-    private long _total;
+    private final long _total;
 
     public Time(long milliseconds) {
         this._total = milliseconds;

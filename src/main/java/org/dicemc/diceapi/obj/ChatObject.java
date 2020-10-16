@@ -1,18 +1,19 @@
 package org.dicemc.diceapi.obj;
 
-import org.dicemc.diceapi.DiceAPI;
-import org.dicemc.diceapi.api.DiceMessage;
-import org.dicemc.diceapi.api.messages.InvalidPermissionsMessage;
-import org.dicemc.diceapi.api.messages.InvalidSubCommandMessage;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.dicemc.diceapi.DiceAPI;
+import org.dicemc.diceapi.api.DiceMessage;
+import org.dicemc.diceapi.api.messages.InvalidPermissionsMessage;
+import org.dicemc.diceapi.api.messages.InvalidSubCommandMessage;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ChatObject {
-    private String name;
+    private final String name;
 
     private ConsoleCommandSender console;
 
@@ -22,19 +23,19 @@ public class ChatObject {
     }
 
     public void sendInvalidPermissionsMessage(Player player) {
-        sendPlayerMessageNoHeader(player, (DiceMessage)new InvalidPermissionsMessage());
+        sendPlayerMessageNoHeader(player, new InvalidPermissionsMessage());
     }
 
     public void sendInvalidSubCommandMessage(Player player, String attempt) {
-        sendPlayerMessageNoHeader(player, (DiceMessage)new InvalidSubCommandMessage(attempt));
+        sendPlayerMessageNoHeader(player, new InvalidSubCommandMessage(attempt));
     }
 
     public void sendInvalidSubCommandMessage(CommandSender sender, String attempt) {
         if (sender instanceof Player) {
-            sendInvalidSubCommandMessage((Player)sender, attempt);
+            sendInvalidSubCommandMessage((Player) sender, attempt);
             return;
         }
-        outNoHeader((DiceMessage)new InvalidSubCommandMessage(attempt));
+        outNoHeader(new InvalidSubCommandMessage(attempt));
     }
 
     public void sendPlayerMessage(Player player, String message) {
@@ -59,21 +60,21 @@ public class ChatObject {
 
     public void sendGlobalMessage(String message) {
         message = DiceAPI.getChatUtils().formatMessage("&7[&9" + this.name + "&7]&f " + message);
-        DiceAPI.plugin.getServer().broadcastMessage(message);
+        DiceAPI.instance.getServer().broadcastMessage(message);
     }
 
     public void sendGlobalMessageNoHeader(String message) {
         message = DiceAPI.getChatUtils().formatMessage(message);
-        DiceAPI.plugin.getServer().broadcastMessage(message);
+        DiceAPI.instance.getServer().broadcastMessage(message);
     }
 
     public void sendGlobalMessage(DiceMessage message) {
         String msg = DiceAPI.getChatUtils().formatMessage("&7[&9" + this.name + "&7]&f " + message);
-        DiceAPI.plugin.getServer().broadcastMessage(msg);
+        DiceAPI.instance.getServer().broadcastMessage(msg);
     }
 
     public void sendGlobalMessageNoHeader(DiceMessage message) {
-        DiceAPI.plugin.getServer().broadcastMessage(message.getMessage());
+        DiceAPI.instance.getServer().broadcastMessage(message.getMessage());
     }
 
     public void out(String message) {

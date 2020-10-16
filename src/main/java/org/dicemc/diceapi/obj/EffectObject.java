@@ -1,6 +1,5 @@
 package org.dicemc.diceapi.obj;
 
-import java.util.Random;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -9,7 +8,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.Random;
+
 public class EffectObject {
+    private final Random random = new Random();
+
     public void applyPotionEffect(Player player, PotionEffectType effectType, int duration, int strength) {
         player.addPotionEffect(new PotionEffect(effectType, duration * 20, strength));
     }
@@ -43,7 +46,6 @@ public class EffectObject {
     }
 
     public void showSmoke(Location location, int iterations) {
-        Random random = new Random();
         for (int i = 0; i < iterations; i++)
             location.getWorld().playEffect(location, Effect.SMOKE, random.nextInt(9));
     }

@@ -18,14 +18,12 @@ public class InventoryObject {
                             .equalsIgnoreCase(items.getItemMeta().getDisplayName())))
                 space += items.getMaxStackSize() - i.getAmount();
         }
-        if (space >= needed)
-            return true;
-        return false;
+        return space >= needed;
     }
 
     public boolean giveItems(Player player, ItemStack items) {
         if (canHold(player, items)) {
-            player.getInventory().addItem(new ItemStack[] { items });
+            player.getInventory().addItem(items);
             return true;
         }
         return false;
@@ -53,14 +51,12 @@ public class InventoryObject {
                     amount += i.getAmount();
             }
         }
-        if (amount >= needed)
-            return true;
-        return false;
+        return amount >= needed;
     }
 
     public boolean takeItems(Player player, ItemStack items) {
         if (hasItems(player, items)) {
-            player.getInventory().removeItem(new ItemStack[] { items });
+            player.getInventory().removeItem(items);
             return true;
         }
         return false;

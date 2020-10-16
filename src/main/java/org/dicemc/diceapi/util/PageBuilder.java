@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class PageBuilder {
-    private ArrayList<String> elements;
+    private final ArrayList<String> elements;
 
     private int pages = 0;
 
@@ -14,7 +14,7 @@ public class PageBuilder {
 
     private String title;
 
-    private String titleContainer = "&f";
+    private String titleContainer;
 
     public PageBuilder(String title, String titleContainerColor) {
         this.elements = new ArrayList<>();
@@ -44,15 +44,14 @@ public class PageBuilder {
     }
 
     public void remove(String element) {
-        if (this.elements.contains(element))
-            this.elements.remove(element);
+        this.elements.remove(element);
     }
 
     public void showPage(Player player, int page) {
         if (!hasPage(page))
             page = 1;
         int start = this.elementsPerPage * (page - 1);
-        DiceAPI.getChatAPI().sendPlayerMessageNoHeader(player, String.valueOf(this.titleContainer) + "====[&f" + this.title + " Page " + page + "/" + this.pages + this.titleContainer + "]====");
+        DiceAPI.getChatAPI().sendPlayerMessageNoHeader(player, this.titleContainer + "====[&f" + this.title + " Page " + page + "/" + this.pages + this.titleContainer + "]====");
         for (int i = start; i < start + this.elementsPerPage &&
                 i + 1 <= this.elements.size(); i++)
             DiceAPI.getChatAPI().sendPlayerMessageNoHeader(player, this.elements.get(i));
@@ -66,7 +65,7 @@ public class PageBuilder {
         if (!hasPage(page))
             page = 1;
         int start = this.elementsPerPage * (page - 1);
-        DiceAPI.getChatAPI().outNoHeader(String.valueOf(this.titleContainer) + "====[&f" + this.title + " Page " + page + "/" + this.pages + this.titleContainer + "]====");
+        DiceAPI.getChatAPI().outNoHeader(this.titleContainer + "====[&f" + this.title + " Page " + page + "/" + this.pages + this.titleContainer + "]====");
         for (int i = start; i < start + this.elementsPerPage &&
                 i + 1 <= this.elements.size(); i++)
             DiceAPI.getChatAPI().outNoHeader(this.elements.get(i));
