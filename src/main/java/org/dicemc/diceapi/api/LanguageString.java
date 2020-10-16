@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LanguageString {
-    private String string;
+    private final String string;
 
-    private HashMap<String, String> replacements;
+    private final HashMap<String, String> replacements;
 
     public LanguageString(String string, HashMap<String, String> replacements) {
         this.string = string;

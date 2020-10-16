@@ -3,13 +3,12 @@ package org.dicemc.diceapi.api;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.dicemc.diceapi.api.metrics.Metrics;
 import org.dicemc.diceapi.obj.ChatObject;
 
 import java.util.ArrayList;
 
 public abstract class DicePlugin extends JavaPlugin {
-    private ArrayList<Integer> tasks = new ArrayList<>();
+    private final ArrayList<Integer> tasks = new ArrayList<>();
 
     public ChatObject chat;
 
@@ -34,11 +33,6 @@ public abstract class DicePlugin extends JavaPlugin {
 
     public abstract void onStop();
 
-    public void startMetrics() {
-        Metrics metrics = new Metrics((Plugin)this);
-        metrics.isEnabled();
-    }
-
     public double timeTakenToEnable() {
         return (this.timeEnd - this.timeStart) / 1000.0D;
     }
@@ -48,18 +42,18 @@ public abstract class DicePlugin extends JavaPlugin {
     }
 
     public void registerEvents(Listener l) {
-        getServer().getPluginManager().registerEvents(l, (Plugin)this);
+        getServer().getPluginManager().registerEvents(l, this);
     }
 
     public int registerDelayedTask(Runnable task, long delay) {
-        int taskId = getServer().getScheduler().scheduleSyncDelayedTask((Plugin)this, task, delay);
-        this.tasks.add(Integer.valueOf(taskId));
+        int taskId = getServer().getScheduler().scheduleSyncDelayedTask(this, task, delay);
+        this.tasks.add(taskId);
         return taskId;
     }
 
     public int registerRepeatingTask(Runnable task, long delay, long interval) {
-        int taskId = getServer().getScheduler().scheduleSyncRepeatingTask((Plugin)this, task, delay, interval);
-        this.tasks.add(Integer.valueOf(taskId));
+        int taskId = getServer().getScheduler().scheduleSyncRepeatingTask(this, task, delay, interval);
+        this.tasks.add(taskId);
         return taskId;
     }
 
@@ -70,6 +64,6 @@ public abstract class DicePlugin extends JavaPlugin {
 
     public void cancelAllTasks() {
         this.tasks.clear();
-        getServer().getScheduler().cancelTasks((Plugin)this);
+        getServer().getScheduler().cancelTasks(this);
     }
 }

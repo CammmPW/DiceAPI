@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.dicemc.diceapi.DiceAPI;
 import org.dicemc.diceapi.util.PageBuilder;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,7 +63,7 @@ public abstract class DiceCommandHandler implements CommandExecutor {
         this.commands.add(command);
     }
 
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (args.length == 0) {
             if (sender instanceof Player) {
                 if (DiceAPI.getPermAPI().hasPermission((Player)sender, this.permission)) {

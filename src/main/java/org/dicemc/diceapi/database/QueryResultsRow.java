@@ -5,9 +5,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class QueryResultsRow {
-    private String[] columns;
+    private final String[] columns;
 
-    private Object[] data;
+    private final Object[] data;
 
     public QueryResultsRow(String[] columns, Object[] data) {
         this.data = data;
@@ -16,69 +16,69 @@ public class QueryResultsRow {
 
     public QueryResultsRow(ArrayList<String> columns, ArrayList<Object> data) {
         this.data = data.toArray();
-        this.columns = columns.<String>toArray(new String[0]);
+        this.columns = columns.toArray(new String[0]);
     }
 
     public boolean getBoolean(String columnName) throws DatabaseException {
         Object obj = getObject(columnName);
         if (obj instanceof Boolean)
-            return ((Boolean)obj).booleanValue();
+            return (Boolean) obj;
         throw new DatabaseException("Data in column `" + columnName + "` is not instanceof Boolean");
     }
 
     public Date getDate(String columnName) throws DatabaseException {
         Object obj = getObject(columnName);
         if (obj instanceof Date)
-            return (Date)obj;
+            return (Date) obj;
         throw new DatabaseException("Data in column `" + columnName + "` is not instanceof Date");
     }
 
     public double getDouble(String columnName) throws DatabaseException {
         Object obj = getObject(columnName);
         if (obj instanceof Double)
-            return ((Double)obj).doubleValue();
+            return (Double) obj;
         throw new DatabaseException("Data in column `" + columnName + "` is not instanceof Double");
     }
 
     public float getFloat(String columnName) throws DatabaseException {
         Object obj = getObject(columnName);
         if (obj instanceof Float)
-            return ((Float)obj).floatValue();
+            return (Float) obj;
         throw new DatabaseException("Data in column `" + columnName + "` is not instanceof Float");
     }
 
     public int getInteger(String columnName) throws DatabaseException {
         Object obj = getObject(columnName);
         if (obj instanceof Integer)
-            return ((Integer)obj).intValue();
+            return (Integer) obj;
         throw new DatabaseException("Data in column `" + columnName + "` is not instanceof Integer");
     }
 
     public long getLong(String columnName) throws DatabaseException {
         Object obj = getObject(columnName);
         if (obj instanceof Long)
-            return ((Long)obj).longValue();
+            return (Long) obj;
         throw new DatabaseException("Data in column `" + columnName + "` is not instanceof Long");
     }
 
     public short getShort(String columnName) throws DatabaseException {
         Object obj = getObject(columnName);
         if (obj instanceof Short)
-            return ((Short)obj).shortValue();
+            return (Short) obj;
         throw new DatabaseException("Data in column `" + columnName + "` is not instanceof Short");
     }
 
     public String getString(String columnName) throws DatabaseException {
         Object obj = getObject(columnName);
         if (obj instanceof String)
-            return (String)obj;
+            return (String) obj;
         throw new DatabaseException("Data in column `" + columnName + "` is not instanceof String");
     }
 
     public Timestamp getTimestamp(String columnName) throws DatabaseException {
         Object obj = getObject(columnName);
         if (obj instanceof Timestamp)
-            return (Timestamp)obj;
+            return (Timestamp) obj;
         throw new DatabaseException("Data in column `" + columnName + "` is not instanceof Timestamp");
     }
 

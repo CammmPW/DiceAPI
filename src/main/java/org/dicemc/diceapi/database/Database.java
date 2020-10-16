@@ -1,11 +1,8 @@
 package org.dicemc.diceapi.database;
 
 import org.dicemc.diceapi.DiceAPI;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 
 public class Database {
     private Connection conn;
@@ -13,7 +10,8 @@ public class Database {
     public Database() throws SQLException {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-        } catch (Exception exception) {}
+        } catch (Exception exception) {
+        }
         connect();
     }
 
@@ -47,21 +45,19 @@ public class Database {
         for (i = (arrayOfObject = params).length, b = 0; b < i; ) {
             Object param = arrayOfObject[b];
             if (param instanceof Integer) {
-                stmt.setInt(counter++, ((Integer)param).intValue());
+                stmt.setInt(counter++, (Integer) param);
             } else if (param instanceof Short) {
-                stmt.setShort(counter++, ((Short)param).shortValue());
+                stmt.setShort(counter++, (Short) param);
             } else if (param instanceof Long) {
-                stmt.setLong(counter++, ((Long)param).longValue());
+                stmt.setLong(counter++, (Long) param);
             } else if (param instanceof Double) {
-                stmt.setDouble(counter++, ((Double)param).doubleValue());
+                stmt.setDouble(counter++, (Double) param);
             } else if (param instanceof String) {
-                stmt.setString(counter++, (String)param);
+                stmt.setString(counter++, (String) param);
             } else if (param == null) {
                 stmt.setNull(counter++, 0);
-            } else if (param instanceof Object) {
-                stmt.setObject(counter++, param);
             } else {
-                System.out.printf("Database -> Unsupported data type %s", new Object[] { param.getClass().getSimpleName() });
+                stmt.setObject(counter++, param);
             }
             b++;
         }
@@ -70,38 +66,22 @@ public class Database {
 
     public QueryResults read(String sql, Object... params) {
         ensureConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
         QueryResults results = null;
-        try {
-            stmt = prepareStatement(sql, params);
-            rs = stmt.executeQuery();
+        try (PreparedStatement ps = prepareStatement(sql, params)) {
+            ResultSet rs = ps.executeQuery();
             if (rs != null)
                 results = new QueryResults(rs);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (rs != null)
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            if (stmt != null)
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
+
         return results;
     }
 
     public void write(String sql, Object... params) {
-        try {
-            ensureConnection();
-            PreparedStatement stmt = prepareStatement(sql, params);
-            stmt.executeUpdate();
+        ensureConnection();
+        try (PreparedStatement ps = prepareStatement(sql, params)) {
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

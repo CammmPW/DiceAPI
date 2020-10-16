@@ -14,15 +14,15 @@ public class DevCommands {
     @Command(name = "item-as-string", args = "[printToConsole]", aliases = {"ias"}, desc = "Convert your held item to a TacoSerialization string", onlyPlayer = true)
     @CommandPermission("TacoAPI.dev.itemAsString")
     public static void itemAsString(CommandContext context) {
-        ItemStack hand = context.getPlayer().getItemInHand();
+        ItemStack hand = context.getPlayer().getInventory().getItemInMainHand();
         if (hand == null) {
             context.sendMessageToSender("&cYou are not holding anything");
             return;
         }
-        boolean console = context.gt(0) ? Boolean.valueOf(context.getString(0)).booleanValue() : false;
+        boolean console = context.gt(0) && Boolean.parseBoolean(context.getString(0));
         String str = SingleItemSerialization.serializeItemAsString(hand);
         if (console) {
-            DiceAPI.plugin.chat.out(str);
+            DiceAPI.instance.chat.out(str);
         } else {
             context.sendMessageToSender(str);
         }

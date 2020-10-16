@@ -5,6 +5,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.dicemc.diceapi.DiceAPI;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 public abstract class DiceWildcardCommand implements CommandExecutor {
     public String cmdName;
@@ -22,7 +25,7 @@ public abstract class DiceWildcardCommand implements CommandExecutor {
         this.permission = permission;
     }
 
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player)sender;
             if (this.permission == null || this.permission.equalsIgnoreCase("") || player.hasPermission(this.permission)) {
@@ -31,7 +34,7 @@ public abstract class DiceWildcardCommand implements CommandExecutor {
                 } else {
                     String subcommand = args[0];
                     if (subcommand.equalsIgnoreCase("?") || subcommand.equalsIgnoreCase("help")) {
-                        String command = "&b/" + this.cmdName + " &3" + args + "&7: &b" + this.description;
+                        String command = "&b/" + this.cmdName + " &3" + Arrays.toString(args) + "&7: &b" + this.description;
                         DiceAPI.getChatAPI().sendPlayerMessageNoHeader(player, command);
                     } else {
                         args = DiceAPI.getChatUtils().removeFirstArg(args);

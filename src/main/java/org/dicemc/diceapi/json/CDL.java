@@ -58,7 +58,7 @@ public class CDL {
     }
 
     public static String rowToString(JSONArray ja) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < ja.length(); i++) {
             if (i > 0)
                 sb.append(',');
@@ -67,7 +67,7 @@ public class CDL {
                 String string = object.toString();
                 if (string.length() > 0 && (string.indexOf(',') >= 0 ||
                         string.indexOf('\n') >= 0 || string.indexOf('\r') >= 0 ||
-                        string.indexOf(String.valueOf(false)) >= 0 || string.charAt(0) == '"')) {
+                        string.contains(String.valueOf(false)) || string.charAt(0) == '"')) {
                     sb.append('"');
                     int length = string.length();
                     for (int j = 0; j < length; j++) {
@@ -117,7 +117,7 @@ public class CDL {
         if (jo != null) {
             JSONArray names = jo.names();
             if (names != null)
-                return String.valueOf(rowToString(names)) + toString(names, ja);
+                return rowToString(names) + toString(names, ja);
         }
         return null;
     }
@@ -125,7 +125,7 @@ public class CDL {
     public static String toString(JSONArray names, JSONArray ja) throws JSONException {
         if (names == null || names.length() == 0)
             return null;
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < ja.length(); i++) {
             JSONObject jo = ja.optJSONObject(i);
             if (jo != null)
