@@ -25,7 +25,7 @@ public class PlayerStatsSerialization {
             if (shouldSerialize("food"))
                 root.put("food", player.getFoodLevel());
             if (shouldSerialize("gamemode"))
-                root.put("gamemode", player.getGameMode().ordinal());
+                root.put("gamemode", player.getGameMode().toString());
             if (shouldSerialize("health"))
                 root.put("health", player.getHealthScale());
             if (shouldSerialize("level"))
@@ -85,7 +85,7 @@ public class PlayerStatsSerialization {
             if (stats.has("health"))
                 player.setHealth(stats.getDouble("health"));
             if (stats.has("gamemode"))
-                player.setGameMode(GameMode.getByValue(stats.getInt("gamemode")));
+                player.setGameMode(GameMode.valueOf(stats.getString("gamemode")));
             if (stats.has("level"))
                 player.setLevel(stats.getInt("level"));
             if (stats.has("potion-effects"))

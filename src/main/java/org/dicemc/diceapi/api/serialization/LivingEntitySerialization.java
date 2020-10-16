@@ -13,18 +13,18 @@ import java.io.IOException;
 public class LivingEntitySerialization {
     public static JSONObject serializeEntity(LivingEntity entity) {
         if (entity instanceof Player)
-            return PlayerSerialization.serializePlayer((Player)entity);
+            return PlayerSerialization.serializePlayer((Player) entity);
         try {
             JSONObject root = new JSONObject();
             if (shouldSerialize("age") && entity instanceof Ageable)
-                root.put("age", ((Ageable)entity).getAge());
+                root.put("age", ((Ageable) entity).getAge());
             if (shouldSerialize("health"))
                 root.put("health", entity.getHealth());
             if (shouldSerialize("name"))
                 root.put("name", entity.getCustomName());
             if (shouldSerialize("potion-effects"))
                 root.put("potion-effects", PotionEffectSerialization.serializeEffects(entity.getActivePotionEffects()));
-            root.put("type", entity.getType().getTypeId());
+            root.put("type", entity.getType().toString());
             return root;
         } catch (JSONException e) {
             e.printStackTrace();
@@ -64,9 +64,9 @@ public class LivingEntitySerialization {
         try {
             if (!stats.has("type"))
                 throw new IllegalArgumentException("The type of the entity cannot be determined");
-            LivingEntity entity = (LivingEntity)location.getWorld().spawnEntity(location, EntityType.fromId(stats.getInt("type")));
+            LivingEntity entity = (LivingEntity) location.getWorld().spawnEntity(location, EntityType.valueOf(stats.getString("type")));
             if (stats.has("age") && entity instanceof Ageable)
-                ((Ageable)entity).setAge(stats.getInt("age"));
+                ((Ageable) entity).setAge(stats.getInt("age"));
             if (stats.has("health"))
                 entity.setHealth(stats.getDouble("health"));
             if (stats.has("name"))

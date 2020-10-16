@@ -129,7 +129,7 @@ public class JSONObject {
         Enumeration<String> keys = bundle.getKeys();
         while (keys.hasMoreElements()) {
             String key = keys.nextElement();
-            if (key instanceof String) {
+            if (key != null) {
                 String[] path = key.split("\\.");
                 int last = path.length - 1;
                 JSONObject target = this;
@@ -270,11 +270,11 @@ public class JSONObject {
         int length = jo.length();
         if (length == 0)
             return null;
-        Iterator<String> iterator = jo.keys();
+        Iterator<Object> iterator = jo.keys();
         String[] names = new String[length];
         int i = 0;
         while (iterator.hasNext()) {
-            names[i] = iterator.next();
+            names[i] = iterator.next().toString();
             i++;
         }
         return names;
@@ -328,11 +328,11 @@ public class JSONObject {
         return NULL.equals(opt(key));
     }
 
-    public Iterator keys() {
+    public Iterator<Object> keys() {
         return keySet().iterator();
     }
 
-    public Set keySet() {
+    public Set<Object> keySet() {
         return this.map.keySet();
     }
 
@@ -342,7 +342,7 @@ public class JSONObject {
 
     public JSONArray names() {
         JSONArray ja = new JSONArray();
-        Iterator keys = keys();
+        Iterator<Object> keys = keys();
         while (keys.hasNext())
             ja.put(keys.next());
         return (ja.length() == 0) ? null : ja;
@@ -669,17 +669,17 @@ public class JSONObject {
     }
 
     public static String valueToString(Object value) throws JSONException, IOException {
-        if (value == null || value.equals(null))
+        if (value == null)
             return "null";
         if (value instanceof JSONString) {
-            Object object;
+            String object;
             try {
                 object = ((JSONString)value).toJSONString();
             } catch (Exception e) {
                 throw new JSONException(e);
             }
-            if (object instanceof String)
-                return (String)object;
+            if (object != null)
+                return object;
             throw new JSONException("Bad value from toJSONString: " + object);
         }
         if (value instanceof Number)
@@ -733,7 +733,7 @@ public class JSONObject {
     }
 
     static Writer writeValue(Writer writer, Object value, int indentFactor, int indent) throws JSONException, IOException {
-        if (value == null || value.equals(null)) {
+        if (value == null) {
             writer.write("null");
         } else if (value instanceof JSONObject) {
             ((JSONObject)value).write(writer, indentFactor, indent);
@@ -773,7 +773,7 @@ public class JSONObject {
         try {
             boolean commanate = false;
             int length = length();
-            Iterator keys = keys();
+            Iterator<Object> keys = keys();
             writer.write(123);
             if (length == 1) {
                 Object key = keys.next();

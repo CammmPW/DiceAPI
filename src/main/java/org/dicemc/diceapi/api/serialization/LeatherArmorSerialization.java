@@ -51,7 +51,7 @@ public class LeatherArmorSerialization {
     public static LeatherArmorMeta getLeatherArmorMeta(JSONObject json) {
         try {
             ItemStack dummyItems = new ItemStack(Material.LEATHER_HELMET, 1);
-            LeatherArmorMeta meta = (LeatherArmorMeta)dummyItems.getItemMeta();
+            LeatherArmorMeta meta = (LeatherArmorMeta) dummyItems.getItemMeta();
             if (json.has("color"))
                 meta.setColor(ColorSerialization.getColor(json.getJSONObject("color")));
             return meta;

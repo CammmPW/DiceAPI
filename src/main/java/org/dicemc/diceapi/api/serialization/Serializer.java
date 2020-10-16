@@ -43,10 +43,10 @@ public class Serializer {
 
     public static String getStringFromStream(InputStream stream) {
         Scanner x = new Scanner(stream);
-        String str = "";
+        StringBuilder str = new StringBuilder();
         while (x.hasNextLine())
-            str = str + x.nextLine() + "\n";
+            str.append(x.nextLine()).append("\n");
         x.close();
-        return str.trim();
+        return str.toString().trim();
     }
 }

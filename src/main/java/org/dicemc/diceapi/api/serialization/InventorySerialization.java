@@ -28,7 +28,7 @@ public class InventorySerialization {
     public static JSONObject serializePlayerInventory(PlayerInventory inv) {
         try {
             JSONObject root = new JSONObject();
-            JSONArray inventory = serializeInventory((Inventory)inv);
+            JSONArray inventory = serializeInventory(inv);
             JSONArray armor = serializeInventory(inv.getArmorContents());
             root.put("inventory", inventory);
             root.put("armor", armor);

@@ -11,7 +11,7 @@ public class PotionEffectSerialization {
     public static String serializeEffects(Collection<PotionEffect> effects) {
         StringBuilder serialized = new StringBuilder();
         for (PotionEffect e : effects)
-            serialized.append(e.getType().getId()).append(":").append(e.getDuration()).append(":").append(e.getAmplifier()).append(";");
+            serialized.append(e.getType().toString()).append(":").append(e.getDuration()).append(":").append(e.getAmplifier()).append(";");
         return serialized.toString();
     }
 
@@ -24,16 +24,16 @@ public class PotionEffectSerialization {
             String[] effect = effs[i].split(":");
             if (effect.length < 3)
                 throw new IllegalArgumentException(serializedEffects + " - PotionEffect " + i + " (" + effs[i] + "): split must at least have a length of 3");
-            if (!Util.isNum(effect[0]))
-                throw new IllegalArgumentException(serializedEffects + " - PotionEffect " + i + " (" + effs[i] + "): id is not an integer");
+            /*if (!Util.isNum(effect[0]))
+                throw new IllegalArgumentException(serializedEffects + " - PotionEffect " + i + " (" + effs[i] + "): id is not an integer");*/
             if (!Util.isNum(effect[1]))
                 throw new IllegalArgumentException(serializedEffects + " - PotionEffect " + i + " (" + effs[i] + "): duration is not an integer");
             if (!Util.isNum(effect[2]))
                 throw new IllegalArgumentException(serializedEffects + " - PotionEffect " + i + " (" + effs[i] + "): amplifier is not an integer");
-            int id = Integer.parseInt(effect[0]);
+            String id = effect[0];
             int duration = Integer.parseInt(effect[1]);
             int amplifier = Integer.parseInt(effect[2]);
-            PotionEffectType effectType = PotionEffectType.getById(id);
+            PotionEffectType effectType = PotionEffectType.getByName(id);
             if (effectType == null)
                 throw new IllegalArgumentException(serializedEffects + " - PotionEffect " + i + " (" + effs[i] + "): no PotionEffectType with id of " + id);
             PotionEffect e = new PotionEffect(effectType, duration, amplifier);
