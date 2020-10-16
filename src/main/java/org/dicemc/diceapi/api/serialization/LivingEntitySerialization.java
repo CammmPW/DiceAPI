@@ -71,8 +71,9 @@ public class LivingEntitySerialization {
                 entity.setHealth(stats.getDouble("health"));
             if (stats.has("name"))
                 entity.setCustomName(stats.getString("name"));
-            if (stats.has("potion-effects"));
-            PotionEffectSerialization.addPotionEffects(stats.getString("potion-effects"), entity);
+            if (stats.has("potion-effects")) {
+                PotionEffectSerialization.addPotionEffects(stats.getString("potion-effects"), entity);
+            }
             return entity;
         } catch (JSONException | IOException e) {
             e.printStackTrace();
