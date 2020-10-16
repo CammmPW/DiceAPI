@@ -1,4 +1,4 @@
-package org.dicemc.diceapi.api;
+package org.dicemc.diceapi.obj;
 
 import com.sk89q.worldedit.EmptyClipboardException;
 import com.sk89q.worldedit.LocalConfiguration;
@@ -18,7 +18,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.dicemc.diceapi.DiceAPI;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import java.io.File;
 import java.io.FileOutputStream;
