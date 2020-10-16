@@ -1,5 +1,6 @@
 package org.dicemc.diceapi.json;
 
+import java.io.IOException;
 import java.util.Iterator;
 
 public class CookieList {
@@ -15,7 +16,7 @@ public class CookieList {
         return jo;
     }
 
-    public static String toString(JSONObject jo) throws JSONException {
+    public static <E> String toString(JSONObject jo) throws JSONException, IOException {
         boolean b = false;
         Iterator<E> keys = jo.keys();
         StringBuffer sb = new StringBuffer();

@@ -6,6 +6,8 @@ import org.bukkit.entity.Player;
 import org.dicemc.diceapi.json.JSONException;
 import org.dicemc.diceapi.json.JSONObject;
 
+import java.io.IOException;
+
 public class PlayerStatsSerialization {
     public static JSONObject serializePlayerStats(Player player) {
         try {
@@ -90,7 +92,7 @@ public class PlayerStatsSerialization {
                 PotionEffectSerialization.setPotionEffects(stats.getString("potion-effects"), (LivingEntity)player);
             if (stats.has("saturation"))
                 player.setSaturation((float)stats.getDouble("saturation"));
-        } catch (JSONException e) {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
     }

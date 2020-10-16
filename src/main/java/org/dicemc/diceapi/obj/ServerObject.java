@@ -11,7 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class ServerObject {
     public Plugin getPluginFromCommand(String name) {
         String alias = name.toLowerCase();
-        PluginCommand cmd = DiceAPI.plugin.getServer().getPluginCommand(alias);
+        PluginCommand cmd = DiceAPI.instance.getServer().getPluginCommand(alias);
         if (cmd == null)
             return null;
         return cmd.getPlugin();

@@ -9,6 +9,7 @@ import org.dicemc.diceapi.json.JSONArray;
 import org.dicemc.diceapi.json.JSONException;
 import org.dicemc.diceapi.json.JSONObject;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class BookSerialization {
@@ -48,7 +49,7 @@ public class BookSerialization {
                 meta.setPages(allPages);
             }
             return meta;
-        } catch (JSONException e) {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
             return null;
         }
@@ -110,7 +111,7 @@ public class BookSerialization {
                     meta.addStoredEnchant(e, ((Integer)enchants.get(e)).intValue(), true);
             }
             return meta;
-        } catch (JSONException e) {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
             return null;
         }

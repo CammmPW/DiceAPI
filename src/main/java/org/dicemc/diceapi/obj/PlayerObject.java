@@ -31,7 +31,7 @@ public class PlayerObject {
 
     public ArrayList<Wolf> getTamedWolves(String playername) {
         ArrayList<Wolf> wolves = new ArrayList<>();
-        for (World w : DiceAPI.plugin.getServer().getWorlds()) {
+        for (World w : DiceAPI.instance.getServer().getWorlds()) {
             for (Wolf wolf : w.getEntitiesByClass(Wolf.class)) {
                 if (wolf.isTamed() && wolf.getOwner() instanceof Player && (
                         (Player)wolf.getOwner()).getName().equalsIgnoreCase(playername))
@@ -73,13 +73,13 @@ public class PlayerObject {
         File file = new File(DiceAPI.playerData + "/" + name + ".yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         String world = config.getString("last-location.world");
-        World w = DiceAPI.plugin.getServer().getWorld(world);
+        World w = DiceAPI.instance.getServer().getWorld(world);
         if (w == null)
             return null;
         double x = config.getDouble("last-location.x");
         double y = config.getDouble("last-location.y");
         double z = config.getDouble("last-location.z");
-        DiceAPI.plugin.chat.out(String.valueOf(world) + " " + x + " " + y + " " + z);
+        DiceAPI.instance.chat.out(String.valueOf(world) + " " + x + " " + y + " " + z);
         return new Location(w, x, y, z);
     }
 
