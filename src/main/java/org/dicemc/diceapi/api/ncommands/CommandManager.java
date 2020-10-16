@@ -10,21 +10,22 @@ import org.dicemc.diceapi.DiceAPI;
 import org.dicemc.diceapi.api.DicePermissionHandler;
 import org.dicemc.diceapi.util.ChatUtils;
 import org.dicemc.diceapi.util.PageBuilder;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
 public class CommandManager implements CommandExecutor, TabCompleter {
-    private JavaPlugin _plugin;
+    private final JavaPlugin _plugin;
 
-    private HashMap<Method, String> _methods = new HashMap<>();
+    private final HashMap<Method, String> _methods = new HashMap<>();
 
-    private ArrayList<String> _registeredCommands = new ArrayList<>();
+    private final ArrayList<String> _registeredCommands = new ArrayList<>();
 
-    private ArrayList<DicePermissionHandler> _permHandlers = new ArrayList<>();
+    private final ArrayList<DicePermissionHandler> _permHandlers = new ArrayList<>();
 
-    private HashMap<String, PageBuilder> _help = new HashMap<>();
+    private final HashMap<String, PageBuilder> _help = new HashMap<>();
 
     private ArrayList<TabCompleteHook> _tcHooks;
 
@@ -40,7 +41,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         if (player == null || perm.isEmpty() || perm == null)
             return true;
         for (DicePermissionHandler h : this._permHandlers) {
-            String prefix = String.valueOf(h.getPrefix()) + ":";
+            String prefix = h.getPrefix() + ":";
             if (perm.startsWith(prefix) && perm.length() > prefix.length())
                 return h.handlePerm(player, perm.substring(prefix.length()));
         }
@@ -54,11 +55,11 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         for (i = (arrayOfMethod = clazz.getDeclaredMethods()).length, b = 0; b < i; ) {
             Method m = arrayOfMethod[b];
             if (Modifier.isStatic(m.getModifiers())) {
-                boolean parentPresent = m.isAnnotationPresent((Class)ParentCommand.class);
-                boolean commandPresent = m.isAnnotationPresent((Class)Command.class);
-                boolean simplePresent = m.isAnnotationPresent((Class)SimpleCommand.class);
+                boolean parentPresent = m.isAnnotationPresent(ParentCommand.class);
+                boolean commandPresent = m.isAnnotationPresent((Class) Command.class);
+                boolean simplePresent = m.isAnnotationPresent(SimpleCommand.class);
                 if (simplePresent || (parentPresent && commandPresent)) {
-                    String command = simplePresent ? ((SimpleCommand)m.<SimpleCommand>getAnnotation(SimpleCommand.class)).name() : ((ParentCommand)m.<ParentCommand>getAnnotation(ParentCommand.class)).value();
+                    String command = simplePresent ? m.getAnnotation(SimpleCommand.class).name() : m.getAnnotation(ParentCommand.class).value();
                     if (!commandRegistered(command))
                         this._plugin.getCommand(command).setExecutor(this);
                     this._methods.put(m, command);
@@ -80,11 +81,11 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         ArrayList<Method> methods = new ArrayList<>();
         for (Method m : this._methods.keySet()) {
             String test;
-            boolean simple = m.isAnnotationPresent((Class)SimpleCommand.class);
+            boolean simple = m.isAnnotationPresent(SimpleCommand.class);
             if (simple) {
-                test = ((SimpleCommand)m.<SimpleCommand>getAnnotation(SimpleCommand.class)).name();
+                test = m.getAnnotation(SimpleCommand.class).name();
             } else {
-                test = ((ParentCommand)m.<ParentCommand>getAnnotation(ParentCommand.class)).value();
+                test = m.getAnnotation(ParentCommand.class).value();
             }
             if (test.equalsIgnoreCase(parent)) {
                 methods.add(m);
@@ -92,12 +93,10 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                     return methods;
             }
         }
-        Collections.sort(methods, new Comparator<Method>() {
-            public int compare(Method m1, Method m2) {
-                String name1 = ((Command)m1.<Command>getAnnotation(Command.class)).name();
-                String name2 = ((Command)m2.<Command>getAnnotation(Command.class)).name();
-                return name1.compareTo(name2);
-            }
+        methods.sort((m1, m2) -> {
+            String name1 = m1.getAnnotation(org.dicemc.diceapi.api.ncommands.Command.class).name();
+            String name2 = m2.getAnnotation(org.dicemc.diceapi.api.ncommands.Command.class).name();
+            return name1.compareTo(name2);
         });
         return methods;
     }
@@ -129,21 +128,21 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = null;
         if (sender instanceof Player)
-            player = (Player)sender;
+            player = (Player) sender;
         String command = (args.length > 0) ? args[0] : "";
         String[] newArgs = removeFirstArg(args);
         for (Method m : getMethodsFor(cmd.getName())) {
             boolean onlyConsole, onlyPlayer;
             String name;
-            boolean simple = m.isAnnotationPresent((Class)SimpleCommand.class);
+            boolean simple = m.isAnnotationPresent(SimpleCommand.class);
             String[] aliases = null;
             if (simple) {
-                SimpleCommand sc = m.<SimpleCommand>getAnnotation(SimpleCommand.class);
+                SimpleCommand sc = m.getAnnotation(SimpleCommand.class);
                 onlyConsole = sc.onlyConsole();
                 onlyPlayer = sc.onlyPlayer();
                 name = sc.name();
             } else {
-                Command c = m.<Command>getAnnotation(Command.class);
+                org.dicemc.diceapi.api.ncommands.Command c = m.getAnnotation(org.dicemc.diceapi.api.ncommands.Command.class);
                 onlyConsole = c.onlyConsole();
                 onlyPlayer = c.onlyPlayer();
                 name = c.name();
@@ -162,14 +161,14 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                     return true;
                 }
                 try {
-                    if (m.isAnnotationPresent((Class)CommandPermission.class) &&
-                            !handlePerm(player, ((CommandPermission)m.<CommandPermission>getAnnotation(CommandPermission.class)).value())) {
+                    if (m.isAnnotationPresent(CommandPermission.class) &&
+                            !handlePerm(player, m.getAnnotation(CommandPermission.class).value())) {
                         String msg = (new ChatUtils()).formatMessage("&cYou don't have permission");
                         player.sendMessage(msg);
                         return true;
                     }
                     CommandContext cargs = simple ? new CommandContext(sender, cmd.getName(), args) : new CommandContext(sender, command, newArgs);
-                    m.invoke((Object)null, new Object[] { cargs });
+                    m.invoke(null, cargs);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -192,15 +191,15 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         return true;
     }
 
-    public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, Command cmd, @NotNull String alias, String[] args) {
         ArrayList<String> possible = new ArrayList<>();
         String parent = cmd.getName();
         ArrayList<Method> methods = getMethodsFor(parent);
         if (args.length == 1) {
             for (Method m : methods) {
-                if (m.isAnnotationPresent((Class)SimpleCommand.class))
+                if (m.isAnnotationPresent(SimpleCommand.class))
                     continue;
-                Command c = m.<Command>getAnnotation(Command.class);
+                org.dicemc.diceapi.api.ncommands.Command c = m.getAnnotation(org.dicemc.diceapi.api.ncommands.Command.class);
                 String name = c.name();
                 String[] aliases = c.aliases();
                 if (name.startsWith(alias))
@@ -229,20 +228,20 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             String helpLine = "&b/" + label + " &3help&b/&3? [page]&7: &bShows help";
             pages.append(helpLine);
             for (Method m : methods) {
-                Command c = m.<Command>getAnnotation(Command.class);
+                org.dicemc.diceapi.api.ncommands.Command c = m.getAnnotation(org.dicemc.diceapi.api.ncommands.Command.class);
                 if (c.invisible())
                     continue;
-                if (m.isAnnotationPresent((Class)CommandPermission.class) &&
+                if (m.isAnnotationPresent(CommandPermission.class) &&
                         sender instanceof Player &&
-                        !handlePerm((Player)sender, ((CommandPermission)m.<CommandPermission>getAnnotation(CommandPermission.class)).value()))
+                        !handlePerm((Player) sender, m.getAnnotation(CommandPermission.class).value()))
                     continue;
                 String aliasString = getAliasString(c.name(), c.aliases());
                 String line = "&b/" + label;
                 if (!aliasString.isEmpty())
-                    line = String.valueOf(line) + " &3" + aliasString;
+                    line = line + " &3" + aliasString;
                 if (!c.args().isEmpty())
-                    line = String.valueOf(line) + " &3" + c.args();
-                line = String.valueOf(line) + "&7: &b" + c.desc();
+                    line = line + " &3" + c.args();
+                line = line + "&7: &b" + c.desc();
                 pages.append(line);
                 if (c.name().isEmpty() && !hasCommand(methods, "help")) {
                     pages.remove(helpLine);
@@ -258,7 +257,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
     private boolean hasCommand(ArrayList<Method> methods, String command) {
         for (Method m : methods) {
-            Command c = m.<Command>getAnnotation(Command.class);
+            org.dicemc.diceapi.api.ncommands.Command c = m.getAnnotation(org.dicemc.diceapi.api.ncommands.Command.class);
             if (hasAlias(command, c.name(), c.aliases()))
                 return true;
         }
@@ -266,15 +265,16 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     }
 
     private String getAliasString(String name, String[] aliases) {
-        String str = "&3" + name;
+        StringBuilder str = new StringBuilder("&3" + name);
         if (aliases == null || aliases.length == 0)
-            return str;
+            return str.toString();
         for (int i = 0; i < aliases.length; i++) {
-            str = String.valueOf(str) + "&b/&3" + aliases[i];
-            if (i < aliases.length - 1)
-                str = String.valueOf(str) + "&b/&3";
+            str.append("&b/&3").append(aliases[i]);
+            if (i < aliases.length - 1) {
+                str.append("&b/&3");
+            }
         }
-        return str;
+        return str.toString();
     }
 
     private String[] removeArgs(String[] array, int startIndex) {
@@ -300,13 +300,13 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     }
 
     class TabCompleteHook {
-        private String _parent;
+        private final String _parent;
 
-        private String _sub;
+        private final String _sub;
 
-        private int _index;
+        private final int _index;
 
-        private List<String> _list;
+        private final List<String> _list;
 
         public TabCompleteHook(String parent, String sub, int index, List<String> list) {
             this._parent = parent;
