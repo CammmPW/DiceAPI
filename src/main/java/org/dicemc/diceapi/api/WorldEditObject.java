@@ -1,13 +1,10 @@
 package org.dicemc.diceapi.api;
 
-import com.boydti.fawe.Fawe;
-import com.boydti.fawe.object.clipboard.SimpleClipboard;
 import com.sk89q.worldedit.EmptyClipboardException;
 import com.sk89q.worldedit.LocalConfiguration;
 import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.command.SchematicCommands;
 import com.sk89q.worldedit.extension.platform.Actor;
 import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
@@ -16,15 +13,14 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardWriter;
 import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.dicemc.diceapi.DiceAPI;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -43,6 +39,7 @@ public class WorldEditObject {
         return new LocalSession(getLocalConfig());
     }
 
+    @Nullable
     private BukkitWorld getLocalWorld(String worldName) {
         World world = DiceAPI.instance.getServer().getWorld(worldName);
         if (world == null) {
@@ -55,7 +52,7 @@ public class WorldEditObject {
         return new BukkitWorld(world);
     }
 
-    public BlockVector3 toVector(Location location){
+    public BlockVector3 toVector(Location location) {
         return BlockVector3.at(location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }
 
