@@ -6,12 +6,7 @@ import org.dicemc.diceapi.api.serialization.SerializationConfig;
 import org.dicemc.diceapi.commands.DevCommands;
 import org.dicemc.diceapi.database.Database;
 import org.dicemc.diceapi.listener.PlayerListener;
-import org.dicemc.diceapi.obj.ChatObject;
-import org.dicemc.diceapi.obj.EconObject;
-import org.dicemc.diceapi.obj.EffectObject;
-import org.dicemc.diceapi.obj.PermObject;
-import org.dicemc.diceapi.obj.PlayerObject;
-import org.dicemc.diceapi.obj.ServerObject;
+import org.dicemc.diceapi.obj.*;
 import org.dicemc.diceapi.util.ChatUtils;
 import org.dicemc.diceapi.util.ItemUtils;
 import org.dicemc.diceapi.util.TimeUtils;
@@ -49,7 +44,7 @@ public class DiceAPI extends DicePlugin {
 
     private static TimeUtils timeUtils;
 
-    //private static WorldEditObject weAPI;
+    private static WorldEditObject weAPI;
 
     private static CommandManager commands;
 
@@ -151,9 +146,9 @@ public class DiceAPI extends DicePlugin {
         return serverAPI;
     }
 
-    //public static WorldEditObject getWorldEditAPI() {
-        //return weAPI;
-    //}
+    public static WorldEditObject getWorldEditAPI() {
+        return weAPI;
+    }
 
     public static boolean isItemMailInstalled() {
         return (plugin.getServer().getPluginManager().getPlugin("ItemMail") != null);
@@ -163,7 +158,7 @@ public class DiceAPI extends DicePlugin {
         return (econAPI != null);
     }
 
-    //public static boolean isWorldEditAPIOnline() {
-        //return (weAPI != null);
-    //}
+    public static boolean isWorldEditAPIOnline() {
+        return (weAPI != null);
+    }
 }
