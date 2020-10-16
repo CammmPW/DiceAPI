@@ -1,16 +1,15 @@
 package org.dicemc.diceapi.api;
 
-import org.bukkit.configuration.file.YamlConfiguration;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public abstract class DiceConfig {
     protected YamlConfiguration config;
 
-    private File file;
+    private final File file;
 
     public DiceConfig(File file) {
         this.file = file;
@@ -80,7 +79,7 @@ public abstract class DiceConfig {
     }
 
     public void setBoolean(String path, boolean value) {
-        set(path, Boolean.valueOf(value));
+        set(path, value);
         save();
     }
 
@@ -90,12 +89,12 @@ public abstract class DiceConfig {
     }
 
     public void setInt(String path, int value) {
-        set(path, Integer.valueOf(value));
+        set(path, value);
         save();
     }
 
     public void setDouble(String path, double value) {
-        set(path, Double.valueOf(value));
+        set(path, value);
         save();
     }
 
