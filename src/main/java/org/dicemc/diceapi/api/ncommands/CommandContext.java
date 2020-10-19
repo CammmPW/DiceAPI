@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.dicemc.diceapi.DiceAPI;
 import org.dicemc.diceapi.util.ChatUtils;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 
@@ -33,6 +34,7 @@ public class CommandContext {
         return this._sub;
     }
 
+    @Nullable
     public Player getPlayer() {
         if (senderIsPlayer())
             return (Player)this._sender;
@@ -122,10 +124,10 @@ public class CommandContext {
     }
 
     public String getJoinedArgs(int initialIndex, String delimiter) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (int i = initialIndex; i < this._args.length; i++)
-            result = result + this._args[i] + delimiter;
-        return result.trim();
+            result.append(this._args[i]).append(delimiter);
+        return result.toString().trim();
     }
 
     public int getInteger(int index) throws NumberFormatException {

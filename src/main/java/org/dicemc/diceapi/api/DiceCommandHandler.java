@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.dicemc.diceapi.DiceAPI;
 import org.dicemc.diceapi.util.PageBuilder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -122,6 +123,7 @@ public abstract class DiceCommandHandler implements CommandExecutor {
 
     protected abstract void onPlayerCommand(Player paramPlayer);
 
+    @Nullable
     public DiceCommand getCommandByAlias(String alias) {
         for (DiceCommand tc : this.commands) {
             if (tc.hasAlias(alias))

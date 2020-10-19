@@ -18,6 +18,7 @@ public class EconObject {
             this.econ = economyProvider.getProvider();
     }
 
+    @Deprecated
     public double getBalance(String name) {
         return this.econ.getBalance(name);
     }
@@ -47,10 +48,12 @@ public class EconObject {
         return this.econ.currencyNamePlural();
     }
 
+    @Deprecated
     public void deposit(String name, double amount) {
         this.econ.depositPlayer(name, amount);
     }
 
+    @Deprecated
     public void withdraw(String name, double amount) {
         this.econ.withdrawPlayer(name, amount);
     }
@@ -65,6 +68,7 @@ public class EconObject {
         this.econ.withdrawPlayer(offlinePlayer, amount);
     }
 
+    @Deprecated
     public boolean pay(String sender, String receiver, double amount) {
         if (this.econ.has(sender, amount)) {
             withdraw(sender, amount);
@@ -74,6 +78,7 @@ public class EconObject {
         return false;
     }
 
+    @Deprecated
     public boolean canPay(String player, double amount) {
         return this.econ.has(player, amount);
     }

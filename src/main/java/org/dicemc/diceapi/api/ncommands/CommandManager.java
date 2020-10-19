@@ -215,9 +215,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 }
             }
             TabCompletionLists.sort(possible);
-            return possible;
         }
-        return new ArrayList<>();
+        return possible;
     }
 
     public void showHelp(String label, CommandSender sender, int page) {
