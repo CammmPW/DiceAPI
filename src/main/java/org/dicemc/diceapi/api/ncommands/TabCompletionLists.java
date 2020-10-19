@@ -60,8 +60,15 @@ public class TabCompletionLists {
         return _playerNames;
     }
 
+    // No idea what this is supposed to do.
     private static <E> void loopAddSort(Object[] array, ArrayList<String> list) {
-        byte b;
+        for (Object obj : array) {
+            E e = (E) obj;
+            list.add(e.toString());
+        }
+        sort(list);
+
+        /*byte b;
         int i;
         Object[] arrayOfObject;
         for (i = (arrayOfObject = array).length, b = 0; b < i; ) {
@@ -69,7 +76,7 @@ public class TabCompletionLists {
             list.add(e.toString());
             sort(list);
             b++;
-        }
+        }*/
     }
 
     public static void sort(ArrayList<String> list) {
