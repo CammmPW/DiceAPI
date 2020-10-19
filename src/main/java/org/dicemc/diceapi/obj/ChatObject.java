@@ -60,21 +60,21 @@ public class ChatObject {
 
     public void sendGlobalMessage(String message) {
         message = DiceAPI.getChatUtils().formatMessage("&7[&9" + this.name + "&7]&f " + message);
-        DiceAPI.instance.getServer().broadcastMessage(message);
+        Bukkit.getServer().broadcastMessage(message);
     }
 
     public void sendGlobalMessageNoHeader(String message) {
         message = DiceAPI.getChatUtils().formatMessage(message);
-        DiceAPI.instance.getServer().broadcastMessage(message);
+        Bukkit.getServer().broadcastMessage(message);
     }
 
     public void sendGlobalMessage(DiceMessage message) {
         String msg = DiceAPI.getChatUtils().formatMessage("&7[&9" + this.name + "&7]&f " + message);
-        DiceAPI.instance.getServer().broadcastMessage(msg);
+        Bukkit.getServer().broadcastMessage(msg);
     }
 
     public void sendGlobalMessageNoHeader(DiceMessage message) {
-        DiceAPI.instance.getServer().broadcastMessage(message.getMessage());
+        Bukkit.getServer().broadcastMessage(message.getMessage());
     }
 
     public void out(String message) {

@@ -1,6 +1,7 @@
 package org.dicemc.diceapi;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import org.bukkit.plugin.Plugin;
 import org.dicemc.diceapi.api.DicePlugin;
 import org.dicemc.diceapi.api.ncommands.CommandManager;
 import org.dicemc.diceapi.api.serialization.SerializationConfig;
@@ -134,20 +135,10 @@ public class DiceAPI extends DicePlugin {
         this.chat.out("[Player] API Online");
         serverAPI = new ServerObject();
         this.chat.out("[Server] API Online");
-        try {
-            WorldEditPlugin wePlugin = (WorldEditPlugin) this.getServer().getPluginManager().getPlugin("WorldEdit");
-            if (wePlugin == null) {
-                this.chat.outWarn("[WorldEdit] API not loaded");
-            } else {
-                weAPI = new WorldEditObject(wePlugin);
-                this.chat.out("[WorldEdit] API online");
-            }
-        } catch (NoClassDefFoundError e) {
-            this.chat.outWarn("[WorldEdit] API not loaded");
-        }
+        initWorldEdit();
         SerializationConfig.reload();
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-        commands = new CommandManager(instance);
+        commands = new CommandManager(this);
         commands.reg(DevCommands.class);
 
         if (weAPI == null) {
@@ -159,5 +150,15 @@ public class DiceAPI extends DicePlugin {
 
     public void onStop() {
         this.chat.out("Disabled");
+    }
+
+    private void initWorldEdit() {
+        Plugin plugin = this.getServer().getPluginManager().getPlugin("WorldEdit");
+        if (plugin == null) {
+            this.chat.outWarn("[WorldEdit] API not loaded");
+        } else {
+            weAPI = new WorldEditObject((WorldEditPlugin) plugin);
+            this.chat.out("[WorldEdit] API online");
+        }
     }
 }

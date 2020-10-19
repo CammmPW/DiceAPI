@@ -1,5 +1,6 @@
 package org.dicemc.diceapi.obj;
 
+import org.bukkit.Bukkit;
 import org.dicemc.diceapi.DiceAPI;
 import org.dicemc.diceapi.api.serialization.InventorySerialization;
 import java.io.File;
@@ -30,7 +31,7 @@ public class PlayerObject {
 
     public ArrayList<Wolf> getTamedWolves(String playerName) {
         ArrayList<Wolf> wolves = new ArrayList<>();
-        for (World w : DiceAPI.instance.getServer().getWorlds()) {
+        for (World w : Bukkit.getServer().getWorlds()) {
             for (Wolf wolf : w.getEntitiesByClass(Wolf.class)) {
                 if (wolf.isTamed() && wolf.getOwner() instanceof Player && (
                         (Player)wolf.getOwner()).getName().equalsIgnoreCase(playerName))
@@ -73,11 +74,11 @@ public class PlayerObject {
 
     @Nullable
     public Location getLastLocation(String name) {
-        File file = new File(DiceAPI.playerData + "/" + name + ".yml");
+        File file = new File(DiceAPI.playerData.getAbsolutePath() + "/" + name + ".yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         String world = config.getString("last-location.world");
         if (world == null) return null;
-        World w = DiceAPI.instance.getServer().getWorld(world);
+        World w = Bukkit.getServer().getWorld(world);
         if (w == null) return null;
         double x = config.getDouble("last-location.x");
         double y = config.getDouble("last-location.y");

@@ -1,5 +1,6 @@
 package org.dicemc.diceapi.obj;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 public class ServerObject {
     public Plugin getPluginFromCommand(String name) {
         String alias = name.toLowerCase();
-        PluginCommand cmd = DiceAPI.instance.getServer().getPluginCommand(alias);
+        PluginCommand cmd = Bukkit.getServer().getPluginCommand(alias);
         return cmd == null ? null : cmd.getPlugin();
     }
 

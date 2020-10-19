@@ -16,6 +16,7 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.session.ClipboardHolder;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -46,7 +47,7 @@ public class WorldEditObject {
 
     @Nullable
     private BukkitWorld getLocalWorld(String worldName) {
-        World world = DiceAPI.instance.getServer().getWorld(worldName);
+        World world = Bukkit.getServer().getWorld(worldName);
         if (world == null) {
             return null;
         }
