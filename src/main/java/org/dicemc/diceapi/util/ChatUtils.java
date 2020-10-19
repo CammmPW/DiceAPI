@@ -26,7 +26,7 @@ public class ChatUtils {
         for (int i = 0; i < "0123456789abcdefklmnor".length(); i++) {
             char code = "0123456789abcdefklmnor".charAt(i);
             if (message.contains("&" + code))
-                message = message.replaceAll("&" + code, ChatColor.getByChar(code).toString());
+                message = message.replace("&" + code, ChatColor.getByChar(code).toString());
         }
         return message;
     }

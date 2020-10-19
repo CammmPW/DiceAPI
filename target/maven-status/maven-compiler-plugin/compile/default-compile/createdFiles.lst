@@ -46,12 +46,12 @@ org\dicemc\diceapi\api\serialization\OcelotSerialization.class
 org\dicemc\diceapi\obj\EffectObject.class
 org\dicemc\diceapi\api\ncommands\TabCompletionLists.class
 org\dicemc\diceapi\api\serialization\HorseSerialization.class
+org\dicemc\diceapi\obj\WorldEditObject$UnsupportedFormatException.class
 org\dicemc\diceapi\json\JSONTokener.class
 org\dicemc\diceapi\util\TimeUtils$Time.class
 org\dicemc\diceapi\api\ncommands\CommandManager$TabCompleteHook.class
 org\dicemc\diceapi\DiceAPI.class
 org\dicemc\diceapi\util\ChatUtils.class
-org\dicemc\diceapi\api\ncommands\TabCompletionLists$1.class
 org\dicemc\diceapi\obj\PlayerObject.class
 org\dicemc\diceapi\json\JSONObject$1.class
 org\dicemc\diceapi\api\messages\TooFewArgumentsMessage.class

@@ -1,33 +1,33 @@
 package org.dicemc.diceapi.obj;
 
+import com.boydti.fawe.util.EditSessionBuilder;
 import com.sk89q.worldedit.*;
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.extension.platform.Actor;
 import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
-import com.sk89q.worldedit.extent.clipboard.io.*;
+import com.sk89q.worldedit.extent.clipboard.io.BuiltInClipboardFormat;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardWriter;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.session.ClipboardHolder;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.dicemc.diceapi.DiceAPI;
-import javax.annotation.Nullable;
 
+import javax.annotation.Nullable;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import static org.bukkit.Bukkit.getLogger;
-import static org.bukkit.Bukkit.getWorld;
 
 public class WorldEditObject {
     private final WorldEditPlugin we;
@@ -89,34 +89,26 @@ public class WorldEditObject {
         }
     }
 
-    public void pasteSchematicAtVector(World world, String schematic, Vector location) {
-        BlockVector3 vector3 = BlockVector3.at(location.getX(), location.getY(), location.getZ());
+    public void pasteSchematicAtVector(World world, String schematic, BlockVector3 vector) throws UnsupportedFormatException {
         File schema = new File(schematic);
         getLogger().info(schematic);
 
         ClipboardFormat format = ClipboardFormats.findByFile(schema);
+        if (format == null) {
+            throw new UnsupportedFormatException("This schematic format is not recognised or supported.");
+        }
+        try (Clipboard clipboard = format.load(schema)) {
 
-        ClipboardReader reader = null;
-        try {
-            reader = format.getReader(new FileInputStream(schema));
-        } catch (IOException e) {
-            e.printStackTrace();
-        };
-
-        try {
-            Clipboard clipboard = reader.read();
-
-            com.sk89q.worldedit.world.World adaptedWorld = getLocalWorld(world);
-
-            EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(adaptedWorld,-1);
+            BukkitWorld adaptedWorld = getLocalWorld(world);
+            EditSession editSession = new EditSessionBuilder(adaptedWorld).limitUnlimited().build();
 
             // Saves our operation and builds the paste - ready to be completed.
             Operation operation = new ClipboardHolder(clipboard).createPaste(editSession)
-                    .to(vector3).ignoreAirBlocks(true).build();
+                    .to(vector).ignoreAirBlocks(true).build();
 
             try { // This simply completes our paste and then cleans up.
                 Operations.complete(operation);
-                editSession.flushSession();
+                editSession.flushQueue();
 
             } catch (WorldEditException e) { // If worldedit generated an exception it will go here
                 getLogger().severe("OOPS! Something went wrong, please contact an administrator");
@@ -127,7 +119,14 @@ public class WorldEditObject {
         }
     }
 
-    public void pasteSchematic(World world, String schematic, Vector location) {
-        pasteSchematicAtVector(world, schematic, location);
+    public void pasteSchematic(World world, String schematic, BlockVector3 vector) throws UnsupportedFormatException {
+        pasteSchematicAtVector(world, schematic, vector);
+    }
+
+    public static class UnsupportedFormatException extends Exception {
+
+        UnsupportedFormatException(String message) {
+            super(message);
+        }
     }
 }

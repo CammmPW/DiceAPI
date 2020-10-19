@@ -107,7 +107,7 @@ public class TimeUtils {
     public String getFriendlyDate(long time, boolean hour12, boolean shortDisplay) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
-        int style = shortDisplay ? 1 : 2;
+        int style = shortDisplay ? Calendar.SHORT : Calendar.LONG;
         Locale locale = Locale.getDefault();
         String month = calendar.getDisplayName(Calendar.MONTH, style, locale);
         int day = calendar.get(Calendar.DATE);
