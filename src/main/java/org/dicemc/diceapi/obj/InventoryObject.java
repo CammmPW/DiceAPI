@@ -78,15 +78,4 @@ public class InventoryObject {
     public int getAmountOfMaterial(Player player, int id) {
         return getAmountOfMaterial(player, Material.getMaterial(String.valueOf(id)));
     }
-
-    public int getAmountOfMaterial(Player player, Material id, int damage) {
-        int amount = 0;
-        if (id == Material.AIR || Material.getMaterial(String.valueOf(id)) == null)
-            return 0;
-        for (ItemStack i : player.getInventory()) {
-            if (i.getType() == id && i.getDurability() == damage)
-                amount += i.getAmount();
-        }
-        return amount;
-    }
 }
