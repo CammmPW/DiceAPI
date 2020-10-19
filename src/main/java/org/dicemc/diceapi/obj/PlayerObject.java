@@ -17,22 +17,23 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.jetbrains.annotations.Nullable;
 
 public class PlayerObject {
     public InventoryObject getInventoryAPI() {
         return new InventoryObject();
     }
 
-    public ArrayList<Tameable> getPets(String playername) {
-        return new ArrayList<>(getTamedWolves(playername));
+    public ArrayList<Tameable> getPets(String playerName) {
+        return new ArrayList<>(getTamedWolves(playerName));
     }
 
-    public ArrayList<Wolf> getTamedWolves(String playername) {
+    public ArrayList<Wolf> getTamedWolves(String playerName) {
         ArrayList<Wolf> wolves = new ArrayList<>();
         for (World w : DiceAPI.instance.getServer().getWorlds()) {
             for (Wolf wolf : w.getEntitiesByClass(Wolf.class)) {
                 if (wolf.isTamed() && wolf.getOwner() instanceof Player && (
-                        (Player)wolf.getOwner()).getName().equalsIgnoreCase(playername))
+                        (Player)wolf.getOwner()).getName().equalsIgnoreCase(playerName))
                     wolves.add(wolf);
             }
         }
@@ -64,16 +65,20 @@ public class PlayerObject {
     }
 
     public void teleportToLastLocation(Player player, boolean smoke) {
-        teleport(player, getLastLocation(player.getName()), smoke);
+        Location location = getLastLocation(player.getName());
+        if (location != null) {
+            teleport(player, getLastLocation(player.getName()), smoke);
+        }
     }
 
+    @Nullable
     public Location getLastLocation(String name) {
         File file = new File(DiceAPI.playerData + "/" + name + ".yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         String world = config.getString("last-location.world");
+        if (world == null) return null;
         World w = DiceAPI.instance.getServer().getWorld(world);
-        if (w == null)
-            return null;
+        if (w == null) return null;
         double x = config.getDouble("last-location.x");
         double y = config.getDouble("last-location.y");
         double z = config.getDouble("last-location.z");
@@ -99,13 +104,13 @@ public class PlayerObject {
     public GameMode getLastGameMode(String name) {
         File file = new File(DiceAPI.playerData + "/" + name + ".yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        return GameMode.getByValue(config.getInt("last-gamemode"));
+        return GameMode.valueOf(config.getString("last-gamemode"));
     }
 
     public void saveGameMode(String name, GameMode gameMode) {
         File file = new File(DiceAPI.playerData + "/" + name + ".yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        config.set("last-gamemode", gameMode.getValue());
+        config.set("last-gamemode", gameMode.toString());
         save(file, config);
     }
 
