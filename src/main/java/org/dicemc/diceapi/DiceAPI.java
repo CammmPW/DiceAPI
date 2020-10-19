@@ -149,6 +149,12 @@ public class DiceAPI extends DicePlugin {
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         commands = new CommandManager(instance);
         commands.reg(DevCommands.class);
+
+        if (weAPI == null) {
+            this.chat.out("WorldEdit has not been initialized.");
+        } else {
+            this.chat.out("WorldEdit has been initialized.");
+        }
     }
 
     public void onStop() {
